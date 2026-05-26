@@ -66,10 +66,13 @@ flowchart TD
     Login -- No --> Register["Register / Log in"]
     Login -- Yes --> PayCheck["Check course access"]
     Register --> PayCheck
-    PayCheck --> Code["Redeem prepaid code"]
+    PayCheck --> Balance{"Enough balance?"}
+    Balance -- No --> Code["Redeem prepaid code"]
+    Balance -- Yes --> Enroll["Enroll in course"]
     Code --> Valid{"Code valid?"}
     Valid -- No --> Error["Show error"]
-    Valid -- Yes --> Enroll["Enroll in course"]
+    Valid -- Yes --> AddBalance["Add value to student balance"]
+    AddBalance --> Enroll
     Enroll --> Watch["Watch lessons"]
     Watch --> Track["Track progress"]
 ```
@@ -85,7 +88,8 @@ flowchart TD
     Check -- No --> Reject["Reject code"]
     Check -- Yes --> Redeem["Redeem code"]
     Redeem --> Used["Code status: Used"]
-    Redeem --> Access["Allow payment/access flow"]
+    Redeem --> Balance["Add value to student balance"]
+    Balance --> Access["Use balance to buy course"]
 ```
 
 ## 6. Simple ERD
@@ -182,4 +186,3 @@ erDiagram
 ## 7. Notes
 
 These diagrams are basic and can be updated later when the requirements become more detailed.
-

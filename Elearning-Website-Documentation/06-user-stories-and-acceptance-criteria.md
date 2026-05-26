@@ -28,14 +28,15 @@ Acceptance Criteria:
 
 ### US-03: Redeem Prepaid Code
 
-As a student, I want to redeem a prepaid code so that I can pay for course access.
+As a student, I want to redeem a prepaid code so that I can add value to my balance.
 
 Acceptance Criteria:
 
 - Student can enter a prepaid code.
 - System accepts active valid codes.
-- System rejects invalid, used, expired, or cancelled codes.
+- System rejects invalid, used, or cancelled codes.
 - System records successful code redemption.
+- Redeemed value is added to the student's balance.
 
 ### US-04: Enroll in Course
 
@@ -44,6 +45,8 @@ As a student, I want to enroll in a teacher course so that I can access its less
 Acceptance Criteria:
 
 - Student can enroll after successful payment/code redemption.
+- Student balance is reduced by the course price.
+- Student balance cannot become negative.
 - Student can only access enrolled courses.
 - Student buys each teacher course separately.
 
@@ -65,7 +68,7 @@ Acceptance Criteria:
 
 - System tracks completed lessons.
 - Student can see course progress percentage or status.
-- Progress updates after lesson completion.
+- Progress updates after manual completion or after watching 90% of the video.
 
 ## 3. Parent Stories
 
@@ -76,7 +79,7 @@ As a parent, I want to create an account so that I can follow my child.
 Acceptance Criteria:
 
 - Parent can register and log in.
-- Parent can link to a student account.
+- Parent can link to a student account using student ID.
 - Parent can only view linked students.
 
 ### US-08: View Student Progress
@@ -91,13 +94,14 @@ Acceptance Criteria:
 
 ### US-09: Parent Redeems Code
 
-As a parent, I want to redeem a prepaid code so that I can support my child's course payment.
+As a parent, I want to redeem a prepaid code so that I can add value to my child's balance.
 
 Acceptance Criteria:
 
 - Parent can enter a prepaid code.
 - System validates the code.
-- Successful redemption is linked to the correct student/payment flow.
+- Successful redemption adds value to one linked student's balance.
+- One code can be redeemed for one student only.
 
 ## 4. Teacher Stories
 
@@ -150,6 +154,7 @@ As an admin, I want to approve teachers so that only allowed teachers can publis
 Acceptance Criteria:
 
 - Admin can view pending teacher accounts.
+- Teacher approval data includes name, phone, subject, bio, profile image, and documents.
 - Admin can approve or reject a teacher.
 - Rejected teachers cannot publish courses.
 
@@ -172,8 +177,12 @@ Acceptance Criteria:
 
 - Admin can generate codes with fixed values.
 - Each code has a unique value/code number.
+- Each code has a serial number.
 - Each code has a status.
+- Codes do not expire.
 - Admin can view generated codes.
+- Admin can cancel active codes.
+- Admin can track manually distributed codes.
 
 ### US-17: Manage Curriculum Data
 
@@ -195,10 +204,10 @@ As an education center, I want to manage teachers so that the center can organiz
 Acceptance Criteria:
 
 - Center can view linked teachers.
-- Center can request or add teacher linkage based on admin rules.
+- Center can create teacher accounts.
+- Admin can link existing teachers to the center.
 - Center can view center-related courses.
 
 ## 7. Notes
 
 These stories are MVP-level stories. More detailed stories can be added later during backlog refinement.
-

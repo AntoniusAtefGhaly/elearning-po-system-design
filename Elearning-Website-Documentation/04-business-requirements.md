@@ -32,6 +32,9 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | BR-14 | Teachers must be able to view enrolled students and course progress. |
 | BR-15 | Admin must approve teachers and courses before they are published. |
 | BR-16 | Admin must be able to view basic reports for users, courses, enrollments, and prepaid codes. |
+| BR-17 | Admin must be able to manually adjust student balance. |
+| BR-18 | Education centers must be able to create teacher accounts. |
+| BR-19 | Admin must be able to link existing teachers to education centers. |
 
 ## 4. Business Rules
 
@@ -44,9 +47,35 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | R-05 | Each course belongs to one main teacher. |
 | R-06 | A course cannot be visible to students before admin approval. |
 | R-07 | A prepaid code must have a value and status. |
-| R-08 | A used, expired, or cancelled code cannot be reused. |
+| R-08 | A used or cancelled code cannot be reused. |
 | R-09 | A parent can be linked to one or more students. |
 | R-10 | A student can enroll in many courses. |
+| R-11 | Students can register without parent approval. |
+| R-12 | A teacher can be independent or linked to one education center only. |
+| R-13 | Each prepaid code can be redeemed for one student only. |
+| R-14 | Redeemed code value is added to the student's balance. |
+| R-15 | Prepaid codes are distributed manually in the MVP. |
+| R-16 | For refunds, admin resets student balance to 0 and the money is returned manually outside the system. |
+| R-17 | Lesson completion can be manual or automatic. |
+| R-18 | MVP quizzes use MCQ questions only. |
+| R-19 | Student balance can be used partially across multiple courses. |
+| R-20 | Student balance cannot become negative. |
+| R-21 | Admin can manually add or subtract student balance. |
+| R-22 | Refund is allowed only if the student has not used/bought a course. |
+| R-23 | No refund is allowed after the student buys a course and watches lessons. |
+| R-24 | Prepaid codes do not expire. |
+| R-25 | Admin can cancel an active prepaid code. |
+| R-26 | Prepaid codes have serial numbers for manual distribution tracking. |
+| R-27 | Parent links to student using student ID. |
+| R-28 | Teacher approval requires name, phone, subject, bio, profile image, and documents. |
+| R-29 | Education center can create teacher accounts, and admin can link existing teachers to a center. |
+| R-30 | Teacher sets course price. |
+| R-31 | Admin can edit teacher course prices. |
+| R-32 | Automatic lesson completion happens after watching 90% of the video. |
+| R-33 | Quiz score is shown to student. |
+| R-34 | Quiz retry is not allowed in MVP. |
+| R-35 | Quiz result affects course progress. |
+| R-36 | MVP reports include codes, enrollments, teacher sales, and student progress. |
 
 ## 5. Out of Scope
 
@@ -61,15 +90,12 @@ The MVP does not include:
 - Subject bundles
 - Direct online payment gateway
 - Advanced video protection such as watermarking
+- Parent-student link approval workflow
 
 ## 6. Open Questions
 
-1. Does a prepaid code add wallet balance or unlock a specific course?
-2. Can a student redeem codes, or only parents?
-3. Can one teacher belong to more than one education center?
-4. What happens if a student requests a refund?
+No open business requirement questions for now.
 
 ## 7. Next Document
 
 The next document should be the Functional Requirements / SRS. It will explain what each system module must do in more detail.
-

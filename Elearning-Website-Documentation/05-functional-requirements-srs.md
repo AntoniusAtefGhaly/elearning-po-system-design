@@ -29,6 +29,10 @@ The MVP includes these modules:
 | FR-03 | Parents can create accounts. |
 | FR-04 | Teachers and education centers can have accounts approved by admin. |
 | FR-05 | Users can update basic profile information. |
+| FR-05A | Students can register without parent approval. |
+| FR-05B | Teacher approval data includes name, phone, subject, bio, profile image, and documents. |
+| FR-05C | Education centers can create teacher accounts. |
+| FR-05D | Admin can link existing teachers to education centers. |
 
 ### 3.2 Course Catalog
 
@@ -46,19 +50,31 @@ The MVP includes these modules:
 | FR-10 | Teachers can create draft courses. |
 | FR-11 | Teachers can add lessons to courses. |
 | FR-12 | Teachers can add video content to lessons. |
-| FR-13 | Teachers can add simple quizzes. |
+| FR-13 | Teachers can add MCQ quizzes. |
 | FR-14 | Teachers can submit courses for admin approval. |
 | FR-15 | Admin can approve or reject courses. |
+| FR-15A | Teacher can set course price. |
+| FR-15B | Admin can edit teacher course prices. |
 
 ### 3.4 Prepaid Code Management
 
 | ID | Requirement |
 | --- | --- |
 | FR-16 | Admin can generate prepaid codes with fixed values. |
-| FR-17 | Admin can set code status: active, used, expired, or cancelled. |
+| FR-17 | Admin can set code status: active, used, or cancelled. |
 | FR-18 | Student or parent can redeem a valid prepaid code. |
-| FR-19 | The system must reject invalid, used, expired, or cancelled codes. |
+| FR-19 | The system must reject invalid, used, or cancelled codes. |
 | FR-20 | The system must store code redemption history. |
+| FR-20A | Each prepaid code can be redeemed for one student only. |
+| FR-20B | Redeemed code value is added to the student's balance. |
+| FR-20C | Admin can track manually distributed codes. |
+| FR-20D | Admin can reset a student's balance to 0 for manual refund handling. |
+| FR-20E | Student balance can be used partially across multiple courses. |
+| FR-20F | Student balance cannot become negative. |
+| FR-20G | Admin can manually add or subtract student balance. |
+| FR-20H | Prepaid codes do not expire. |
+| FR-20I | Admin can cancel an active prepaid code. |
+| FR-20J | Prepaid codes have serial numbers for manual distribution tracking. |
 
 ### 3.5 Enrollment and Access
 
@@ -75,9 +91,13 @@ The MVP includes these modules:
 | --- | --- |
 | FR-25 | Students can watch enrolled video lessons. |
 | FR-26 | Videos should not be directly downloadable. |
-| FR-27 | Students can mark or automatically record lesson completion. |
-| FR-28 | Students can solve basic quizzes. |
+| FR-27 | Students can mark lesson completion manually, and the system can record completion automatically. |
+| FR-28 | Students can solve MCQ quizzes. |
 | FR-29 | The system tracks student course progress. |
+| FR-29A | Automatic lesson completion happens after watching 90% of the video. |
+| FR-29B | Quiz score is shown to the student. |
+| FR-29C | Student cannot retry a quiz in MVP. |
+| FR-29D | Quiz result affects course progress. |
 
 ### 3.7 Parent View
 
@@ -86,7 +106,8 @@ The MVP includes these modules:
 | FR-30 | Parents can link to student accounts. |
 | FR-31 | Parents can view linked student enrollments. |
 | FR-32 | Parents can view linked student progress. |
-| FR-33 | Parents can redeem prepaid codes for linked students if allowed by final payment design. |
+| FR-33 | Parents can redeem prepaid codes for one linked student at a time. |
+| FR-33A | Parent links to student using student ID. |
 
 ### 3.8 Admin Management
 
@@ -106,6 +127,8 @@ The MVP includes these modules:
 | FR-40 | Admin can view prepaid code reports. |
 | FR-41 | Teachers can view reports for their own courses. |
 | FR-42 | Education centers can view reports for their own teachers/courses. |
+| FR-43 | Admin can view teacher sales reports. |
+| FR-44 | Admin can view student progress reports. |
 
 ## 4. Basic Non-Functional Requirements
 
@@ -119,12 +142,8 @@ The MVP includes these modules:
 
 ## 5. Open Questions
 
-1. Does a redeemed code add wallet balance or unlock a course directly?
-2. Should lesson completion be manual, automatic, or both?
-3. What quiz question types are needed in MVP?
-4. How should parent-student linking be approved?
+No open functional requirement questions for now.
 
 ## 6. Next Document
 
 The next document should be User Stories and Acceptance Criteria.
-
