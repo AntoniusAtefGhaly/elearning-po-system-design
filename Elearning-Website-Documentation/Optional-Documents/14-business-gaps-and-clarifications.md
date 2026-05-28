@@ -1,0 +1,40 @@
+# E-Learning Website - Business Gaps and Clarifications
+
+## 1. Purpose
+
+This document lists business gaps and questions to answer later.
+
+These items do not block the training project now, but they should be clarified before real implementation.
+
+## 2. High Priority Gaps
+
+| ID | Gap / Question | Notes |
+| --- | --- | --- |
+| GAP-01 | What is the course access duration after purchase? | Forever, until end of term, or until school year ends |
+| GAP-02 | If course price changes, does it affect only new students or existing enrolled students too? | Recommended: new students only |
+| GAP-03 | Who approves refund requests? | Admin only, or another role |
+| GAP-04 | When refund happens, does the system cancel code/redemption records or only reset balance? | Current rule: admin resets balance to 0 and money is returned manually |
+| GAP-05 | How do we prevent wrong parent-student linking using only student ID? | Could use student approval, OTP, or share code later |
+| GAP-06 | If education center creates a teacher account, does admin still approve the teacher? | Recommended: yes |
+| GAP-07 | What is the platform commission percentage? | Needed for real revenue reporting |
+| GAP-08 | When is teacher sale counted? | At purchase time, after lesson start, or after refund period |
+
+## 3. Medium Priority Gaps
+
+| ID | Gap / Question | Notes |
+| --- | --- | --- |
+| GAP-09 | Who receives manually distributed prepaid codes? | Student, parent, teacher, or center |
+| GAP-10 | Should code status include generated, distributed, used, and cancelled? | Current simple status: active, used, cancelled |
+| GAP-11 | Should admin enter a reason when adding/subtracting balance? | Recommended: yes, for audit |
+| GAP-12 | How much does quiz affect course progress? | Example: lessons 80%, quizzes 20% |
+| GAP-13 | If teacher edits an approved course, does it need approval again? | Important for content control |
+| GAP-14 | Is student account uniqueness based on phone, email, or both? | Phone may be more practical for Egypt |
+
+## 4. Recommended Questions to Answer Before Real Implementation
+
+1. Course access duration
+2. Parent-student linking safety
+3. Price change rule
+4. Teacher approval when created by education center
+5. Commission/revenue rule
+
