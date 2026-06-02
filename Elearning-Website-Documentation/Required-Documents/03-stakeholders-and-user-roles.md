@@ -11,7 +11,6 @@ This document defines the main users and what each user can do.
 | Students | Study courses and track progress |
 | Parents | Pay and monitor progress |
 | Teachers | Sell and manage courses |
-| Education Centers | Manage teachers and center courses |
 | Admins | Manage the platform |
 | Software Team | Build the system from clear requirements |
 
@@ -67,21 +66,6 @@ Cannot:
 - Generate prepaid codes
 - Manage other teachers' courses
 
-### Education Center
-
-Can:
-
-- Manage center profile
-- Manage linked teachers
-- Create teacher accounts
-- View center courses and reports
-
-Cannot:
-
-- Approve its own courses
-- Generate prepaid codes
-- Manage platform settings
-
 ### Admin
 
 Can:
@@ -96,24 +80,23 @@ Can:
 
 ## 4. Simple Permission Matrix
 
-| Action | Student | Parent | Teacher | Center | Admin |
-| --- | --- | --- | --- | --- | --- |
-| Browse courses | Yes | Yes | Yes | Yes | Yes |
-| Redeem code | Yes | Yes | No | No | Manage |
-| Enroll in course | Yes | For student | No | No | Support |
-| Watch lessons | Yes | No | Own courses | Center courses | Support |
-| View progress | Own | Linked student | Own courses | Center courses | All |
-| Create course | No | No | Yes | With teachers | Support |
-| Approve course | No | No | No | No | Yes |
-| Generate codes | No | No | No | No | Yes |
+| Action | Student | Parent | Teacher | Admin |
+| --- | --- | --- | --- | --- |
+| Browse courses | Yes | Yes | Yes | Yes |
+| Redeem code | Yes | Yes | No | Manage |
+| Enroll in course | Yes | For student | No | Support |
+| Watch lessons | Yes | No | Own courses | Support |
+| View progress | Own | Linked student | Own courses | All |
+| Create course | No | No | Yes | Support |
+| Approve course | No | No | No | Yes |
+| Generate codes | No | No | No | Yes |
 
 ## 5. Main Relationships
 
 - One parent can link to one or more students.
 - Parent links to student using student ID.
 - One teacher can create many courses.
-- One education center can have many teachers.
-- One teacher can be independent or linked to one education center only.
+- Teachers are individual users in MVP.
 - One student can enroll in many courses.
 - One prepaid code can be redeemed for one student only.
 - Prepaid codes have serial numbers and do not expire.
@@ -122,6 +105,5 @@ Can:
 ## 6. Confirmed Decisions
 
 1. Students can register without parent approval.
-2. A teacher cannot belong to more than one education center.
-3. A parent cannot redeem one code for multiple students.
-4. Teacher sets course price, and admin can edit it.
+2. A parent cannot redeem one code for multiple students.
+3. Teacher sets course price, and admin can edit it.

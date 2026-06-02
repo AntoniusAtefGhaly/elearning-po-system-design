@@ -10,11 +10,10 @@ It is not a detailed database design. It helps the software team understand what
 
 | Entity | Description |
 | --- | --- |
-| User | Basic login account for student, parent, teacher, center, or admin |
+| User | Basic login account for student, parent, teacher, or admin |
 | Student | Student profile linked to a user account |
 | Parent | Parent profile linked to a user account |
 | Teacher | Teacher profile linked to a user account |
-| Education Center | Center that can manage teachers and courses |
 | Course | Teacher course that students can buy |
 | Lesson | Video lesson inside a course |
 | Quiz | MCQ quiz linked to course or lesson |
@@ -33,8 +32,7 @@ It is not a detailed database design. It helps the software team understand what
 | User | ID, name, phone, email, password, role, status |
 | Student | ID, user ID, student ID, secondary year |
 | Parent | ID, user ID |
-| Teacher | ID, user ID, subject, bio, profile image, documents, approval status, education center ID |
-| Education Center | ID, name, contact info, approval status |
+| Teacher | ID, user ID, subject, bio, profile image, documents, approval status |
 | Course | ID, teacher ID, year, subject, term, chapter, title, description, price, approval status |
 | Lesson | ID, course ID, title, video URL, order |
 | Quiz | ID, course ID or lesson ID, question, answers, correct answer |
@@ -53,8 +51,6 @@ It is not a detailed database design. It helps the software team understand what
 | User to Parent | One user can have one parent profile |
 | User to Teacher | One user can have one teacher profile |
 | Parent to Student | One parent can link to one or more students using student ID |
-| Education Center to Teacher | One center can have many teachers |
-| Teacher to Education Center | One teacher can be independent or linked to one center |
 | Teacher to Course | One teacher can create many courses |
 | Course to Lesson | One course can have many lessons |
 | Course to Enrollment | One course can have many enrollments |
@@ -89,4 +85,3 @@ It is not a detailed database design. It helps the software team understand what
 - Quiz result affects progress.
 - Lesson completion can be manual.
 - Lesson completion can be automatic after watching 90% of video.
-

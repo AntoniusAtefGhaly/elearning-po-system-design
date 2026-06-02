@@ -45,37 +45,28 @@ This document lists simple MVP test scenarios to confirm that the main product f
 | TS-25 | Teacher views own course progress | Own students' progress is displayed |
 | TS-26 | Teacher tries to view another teacher's course data | Access is denied |
 
-## 5. Education Center Scenarios
+## 5. Admin Scenarios
 
 | ID | Scenario | Expected Result |
 | --- | --- | --- |
-| TS-27 | Education center creates teacher account | Teacher is created under the center |
-| TS-28 | Education center views center courses | Center courses are displayed |
-| TS-29 | Education center views center reports | Center-related reports are displayed |
+| TS-27 | Admin approves teacher | Teacher can create/submit courses |
+| TS-28 | Admin rejects teacher | Teacher cannot publish courses |
+| TS-29 | Admin approves course | Course appears in catalog |
+| TS-30 | Admin rejects course | Course stays hidden from students |
+| TS-31 | Admin generates prepaid code | Code is created with value and serial number |
+| TS-32 | Admin cancels active code | Code cannot be redeemed |
+| TS-33 | Admin manually adjusts balance | Student balance is updated |
+| TS-34 | Admin resets balance for refund | Student balance becomes 0 |
+| TS-35 | Admin views code report | Code report is displayed |
+| TS-36 | Admin views enrollment report | Enrollment report is displayed |
+| TS-37 | Admin views teacher sales report | Teacher sales report is displayed |
+| TS-38 | Admin views student progress report | Student progress report is displayed |
 
-## 6. Admin Scenarios
-
-| ID | Scenario | Expected Result |
-| --- | --- | --- |
-| TS-30 | Admin approves teacher | Teacher can create/submit courses |
-| TS-31 | Admin rejects teacher | Teacher cannot publish courses |
-| TS-32 | Admin approves course | Course appears in catalog |
-| TS-33 | Admin rejects course | Course stays hidden from students |
-| TS-34 | Admin generates prepaid code | Code is created with value and serial number |
-| TS-35 | Admin cancels active code | Code cannot be redeemed |
-| TS-36 | Admin manually adjusts balance | Student balance is updated |
-| TS-37 | Admin resets balance for refund | Student balance becomes 0 |
-| TS-38 | Admin views code report | Code report is displayed |
-| TS-39 | Admin views enrollment report | Enrollment report is displayed |
-| TS-40 | Admin views teacher sales report | Teacher sales report is displayed |
-| TS-41 | Admin views student progress report | Student progress report is displayed |
-
-## 7. Non-Functional Scenarios
+## 6. Non-Functional Scenarios
 
 | ID | Scenario | Expected Result |
 | --- | --- | --- |
-| TS-42 | User opens website on mobile browser | Website is usable on mobile |
-| TS-43 | User opens website in Arabic | Arabic layout and content display correctly |
-| TS-44 | User tries to access page without permission | System blocks access |
-| TS-45 | Student tries to directly download video | Direct download is not available |
-
+| TS-39 | User opens website on mobile browser | Website is usable on mobile |
+| TS-40 | User opens website in Arabic | Arabic layout and content display correctly |
+| TS-41 | User tries to access page without permission | System blocks access |
+| TS-42 | Student tries to directly download video | Direct download is not available |

@@ -20,7 +20,6 @@ This document lists the main features needed for the MVP and their priority.
 | PB-02 | Parent registration/login | Parent | Must Have | Parent can create account and log in |
 | PB-03 | Parent-student linking | Parent | Must Have | Parent links to student using student ID |
 | PB-04 | Teacher account approval | Admin | Must Have | Admin approves teacher accounts before course publishing |
-| PB-05 | Education center account | Center/Admin | Must Have | Education center can manage its profile and teachers |
 | PB-06 | Curriculum management | Admin | Must Have | Admin manages years, subjects, terms, and chapters |
 | PB-07 | Course creation | Teacher | Must Have | Teacher creates course with year, subject, term, chapter, price, and description |
 | PB-08 | Lesson management | Teacher | Must Have | Teacher adds video lessons to courses |
@@ -39,8 +38,8 @@ This document lists the main features needed for the MVP and their priority.
 | PB-21 | Quiz score display | Student | Must Have | Student sees quiz score, no retry in MVP |
 | PB-22 | Progress tracking | Student/Parent/Teacher | Must Have | Progress is visible to student, linked parent, and teacher |
 | PB-23 | Admin code reports | Admin | Must Have | Admin views code generation and redemption reports |
-| PB-24 | Enrollment reports | Admin/Teacher/Center | Must Have | Users view enrollment reports based on role |
-| PB-25 | Teacher sales reports | Admin/Teacher/Center | Must Have | Sales reports are available based on role |
+| PB-24 | Enrollment reports | Admin/Teacher | Must Have | Users view enrollment reports based on role |
+| PB-25 | Teacher sales reports | Admin/Teacher | Must Have | Sales reports are available based on role |
 | PB-26 | Student progress reports | Admin/Teacher/Parent | Must Have | Progress reports are available based on role |
 | PB-27 | Manual refund support | Admin | Should Have | Admin can reset student balance to 0 for approved refund |
 | PB-28 | Admin price override | Admin | Should Have | Admin can edit teacher course prices |
@@ -71,4 +70,3 @@ This document lists the main features needed for the MVP and their priority.
 9. MCQ quizzes
 10. Parent view
 11. Reports
-

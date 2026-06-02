@@ -12,7 +12,7 @@ Build a working Arabic e-learning MVP where students can buy teacher courses usi
 
 The MVP includes:
 
-- Student, parent, teacher, education center, and admin accounts
+- Student, parent, teacher, and admin accounts
 - Curriculum setup
 - Course creation and approval
 - Course catalog
@@ -29,7 +29,7 @@ The MVP includes:
 | Sprint | Focus | Main Features |
 | --- | --- | --- |
 | Sprint 1 | Foundation | User accounts, roles, login, basic admin access |
-| Sprint 2 | Curriculum and Teachers | Years, subjects, terms, chapters, teacher approval, education center setup |
+| Sprint 2 | Curriculum and Teachers | Years, subjects, terms, chapters, teacher approval |
 | Sprint 3 | Courses | Course creation, lesson management, MCQ quiz setup, course approval |
 | Sprint 4 | Catalog and Payment | Course catalog, filters, prepaid code generation, code redemption, student balance |
 | Sprint 5 | Learning Flow | Course purchase, enrollment, video playback, lesson completion, progress tracking |

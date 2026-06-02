@@ -195,19 +195,6 @@ Acceptance Criteria:
 - Admin can add and edit terms and chapters.
 - Courses can be linked to this curriculum data.
 
-## 6. Education Center Stories
-
-### US-18: Manage Center Teachers
-
-As an education center, I want to manage teachers so that the center can organize its courses.
-
-Acceptance Criteria:
-
-- Center can view linked teachers.
-- Center can create teacher accounts.
-- Admin can link existing teachers to the center.
-- Center can view center-related courses.
-
-## 7. Notes
+## 6. Notes
 
 These stories are MVP-level stories. More detailed stories can be added later during backlog refinement.

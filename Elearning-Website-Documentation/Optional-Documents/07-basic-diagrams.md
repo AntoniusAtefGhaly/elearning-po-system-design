@@ -11,7 +11,6 @@ flowchart LR
     Student["Student"] --> Platform["E-Learning Website"]
     Parent["Parent"] --> Platform
     Teacher["Teacher"] --> Platform
-    Center["Education Center"] --> Platform
     Admin["Admin"] --> Platform
     Platform --> Video["Video Hosting"]
 ```
@@ -23,7 +22,6 @@ flowchart TB
     Student["Student"]
     Parent["Parent"]
     Teacher["Teacher"]
-    Center["Education Center"]
     Admin["Admin"]
 
     Browse["Browse Courses"]
@@ -48,8 +46,6 @@ flowchart TB
     Teacher --> CreateCourse
     Teacher --> Progress
 
-    Center --> CreateCourse
-    Center --> Progress
 
     Admin --> ApproveCourse
     Admin --> GenerateCodes
@@ -99,7 +95,6 @@ erDiagram
     USER ||--o| STUDENT : "may be"
     USER ||--o| PARENT : "may be"
     USER ||--o| TEACHER : "may be"
-    EDUCATION_CENTER ||--o{ TEACHER : "has"
     PARENT ||--o{ STUDENT : "links to"
     TEACHER ||--o{ COURSE : "creates"
     COURSE ||--o{ LESSON : "contains"
@@ -133,13 +128,6 @@ erDiagram
     TEACHER {
         int id
         int user_id
-        int education_center_id
-        string approval_status
-    }
-
-    EDUCATION_CENTER {
-        int id
-        string name
         string approval_status
     }
 

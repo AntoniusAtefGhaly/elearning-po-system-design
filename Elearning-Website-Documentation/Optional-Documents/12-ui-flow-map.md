@@ -48,18 +48,7 @@ flowchart TD
     Submit --> Pending["Pending Admin Approval"]
 ```
 
-## 5. Education Center Flow
-
-```mermaid
-flowchart TD
-    Login["Login"] --> Dashboard["Center Dashboard"]
-    Dashboard --> Teachers["Center Teachers"]
-    Teachers --> CreateTeacher["Create Teacher Account"]
-    Dashboard --> Courses["Center Courses"]
-    Dashboard --> Reports["Center Reports"]
-```
-
-## 6. Admin Flow
+## 5. Admin Flow
 
 ```mermaid
 flowchart TD
@@ -74,8 +63,7 @@ flowchart TD
     AdminDashboard --> Reports["Reports"]
 ```
 
-## 7. Notes
+## 6. Notes
 
 - These flows are MVP-level flows.
 - Detailed wireframes can be created from these flows later.
-

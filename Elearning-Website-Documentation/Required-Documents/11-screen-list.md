@@ -48,16 +48,7 @@ It helps UI/UX and frontend teams understand what pages should exist.
 | Quiz Management | Manage MCQ quizzes | Add questions, answers, correct answer |
 | Course Students | View enrolled students | View student progress |
 
-## 6. Education Center Screens
-
-| Screen | Purpose | Main Actions |
-| --- | --- | --- |
-| Center Dashboard | Show center summary | View teachers, courses, reports |
-| Center Profile | Manage center information | Edit center details |
-| Center Teachers | Manage teachers | Create teacher account, view linked teachers |
-| Center Courses | View center courses | Open course details and reports |
-
-## 7. Admin Screens
+## 6. Admin Screens
 
 | Screen | Purpose | Main Actions |
 | --- | --- | --- |
@@ -71,9 +62,8 @@ It helps UI/UX and frontend teams understand what pages should exist.
 | Reports | View platform reports | View codes, enrollments, teacher sales, student progress |
 | Settings | Manage basic platform settings | Update simple system settings |
 
-## 8. Notes
+## 7. Notes
 
 - These are MVP screens only.
 - Detailed wireframes can be created later from this list.
 - Mobile app screens are not included in MVP.
-

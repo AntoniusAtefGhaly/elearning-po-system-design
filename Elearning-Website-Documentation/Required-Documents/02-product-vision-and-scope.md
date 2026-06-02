@@ -15,7 +15,6 @@ Create an Arabic-first e-learning website for Egyptian secondary school students
 | Student | Study online and track progress |
 | Parent | Pay/redeem codes and view progress |
 | Teacher | Publish and manage courses |
-| Education Center | Manage center teachers and courses |
 | Admin | Manage approvals, codes, users, and reports |
 
 ## 4. MVP Scope
@@ -26,7 +25,7 @@ The first release supports:
 - All core subjects
 - Arabic interface
 - Official Egyptian curriculum structure
-- Private teachers and education centers
+- Private teachers
 - Prepaid code payment
 - Separate purchase for each teacher course
 - No direct video download
@@ -57,11 +56,6 @@ The first release supports:
 - Add lessons and quizzes
 - Submit courses for approval
 - View enrolled students and progress
-
-### Education Center
-
-- Manage center profile
-- Manage linked teachers and courses
 
 ### Admin
 
@@ -95,7 +89,7 @@ The first release supports:
 | R-05 | Parents can view linked student progress. |
 | R-06 | Videos must not be directly downloadable. |
 | R-07 | Students can register without parent approval. |
-| R-08 | A teacher can be independent or linked to one education center only. |
+| R-08 | Teachers are individual users in MVP. |
 | R-09 | Each prepaid code can be redeemed for one student only. |
 | R-10 | Redeemed code value is added to the student's balance. |
 | R-11 | Prepaid codes are distributed manually in the MVP. |
@@ -112,7 +106,7 @@ The first release supports:
 | R-22 | Prepaid codes have serial numbers for manual distribution tracking. |
 | R-23 | Parent links to student using student ID. |
 | R-24 | Teacher approval requires name, phone, subject, bio, profile image, and documents. |
-| R-25 | Education center can create teacher accounts, and admin can link existing teachers to a center. |
+| R-25 | Admin can create or approve teacher accounts. |
 | R-26 | Teacher sets course price. |
 | R-27 | Admin can edit teacher course prices. |
 | R-28 | Automatic lesson completion happens after watching 90% of the video. |

@@ -27,12 +27,10 @@ The MVP includes these modules:
 | FR-01 | Users can log in and log out. |
 | FR-02 | Students can create accounts. |
 | FR-03 | Parents can create accounts. |
-| FR-04 | Teachers and education centers can have accounts approved by admin. |
+| FR-04 | Teachers can have accounts approved by admin. |
 | FR-05 | Users can update basic profile information. |
 | FR-05A | Students can register without parent approval. |
 | FR-05B | Teacher approval data includes name, phone, subject, bio, profile image, and documents. |
-| FR-05C | Education centers can create teacher accounts. |
-| FR-05D | Admin can link existing teachers to education centers. |
 
 ### 3.2 Course Catalog
 
@@ -114,7 +112,7 @@ The MVP includes these modules:
 | ID | Requirement |
 | --- | --- |
 | FR-34 | Admin can manage users. |
-| FR-35 | Admin can manage teachers and education centers. |
+| FR-35 | Admin can manage teachers. |
 | FR-36 | Admin can manage secondary years, subjects, terms, and chapters. |
 | FR-37 | Admin can manage course approval status. |
 | FR-38 | Admin can manage prepaid codes. |
@@ -126,7 +124,6 @@ The MVP includes these modules:
 | FR-39 | Admin can view course enrollment reports. |
 | FR-40 | Admin can view prepaid code reports. |
 | FR-41 | Teachers can view reports for their own courses. |
-| FR-42 | Education centers can view reports for their own teachers/courses. |
 | FR-43 | Admin can view teacher sales reports. |
 | FR-44 | Admin can view student progress reports. |
 

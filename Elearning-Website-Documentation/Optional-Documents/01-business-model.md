@@ -12,7 +12,7 @@ An Arabic-first e-learning website for Egyptian secondary school students.
 
 Students can browse teacher courses, redeem prepaid codes, enroll in courses, watch recorded lessons, solve simple quizzes, and track progress.
 
-Teachers and education centers can publish courses based on the official Egyptian curriculum.
+Teachers can publish courses based on the official Egyptian curriculum.
 
 ## 3. Target Users
 
@@ -21,20 +21,19 @@ Teachers and education centers can publish courses based on the official Egyptia
 | Student | Learns online and enrolls in teacher courses |
 | Parent | Supports payment and views student progress |
 | Teacher | Creates and sells courses |
-| Education Center | Manages teachers and courses |
 | Admin | Manages platform users, courses, codes, and approvals |
 
 ## 4. Business Model Canvas
 
 | Area | Decision |
 | --- | --- |
-| Customer Segments | Secondary 1, Secondary 2, Secondary 3 students, parents, teachers, education centers |
+| Customer Segments | Secondary 1, Secondary 2, Secondary 3 students, parents, teachers |
 | Value Proposition | Online access to trusted teacher courses aligned with the Egyptian curriculum |
-| Channels | Teacher pages, social media, parent groups, student referrals, education centers |
+| Channels | Teacher pages, social media, parent groups, student referrals |
 | Revenue Streams | Teacher course purchases using prepaid access codes |
 | Key Resources | Platform, teachers, course videos, curriculum structure, prepaid code system |
 | Key Activities | Course publishing, code generation, enrollment, progress tracking, admin approval |
-| Key Partners | Teachers, education centers, video hosting provider |
+| Key Partners | Teachers, video hosting provider |
 | Cost Structure | Development, hosting, video streaming, support, marketing |
 
 ## 5. Main Business Decisions
@@ -45,7 +44,7 @@ Teachers and education centers can publish courses based on the official Egyptia
 | Grades | Secondary 1, Secondary 2, Secondary 3 |
 | Subjects | All core subjects |
 | Curriculum | Official Egyptian curriculum by term and chapter |
-| Sellers | Private teachers and education centers |
+| Sellers | Private teachers |
 | Language | Arabic first, English later |
 | Payment | Prepaid access codes |
 | Course purchase model | Students buy each teacher course separately |
@@ -69,7 +68,7 @@ Teachers and education centers can publish courses based on the official Egyptia
 
 ## 7. MVP Includes
 
-- Student, parent, teacher, education center, and admin accounts
+- Student, parent, teacher, and admin accounts
 - Course catalog by year, subject, term, chapter, and teacher
 - Prepaid code redemption
 - Course enrollment

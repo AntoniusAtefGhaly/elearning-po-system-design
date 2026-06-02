@@ -8,7 +8,7 @@ It explains what the business needs the system to support, without going into de
 
 ## 2. Product Scope
 
-The MVP is an Arabic-first e-learning website for Egyptian secondary school students, parents, teachers, education centers, and admins.
+The MVP is an Arabic-first e-learning website for Egyptian secondary school students, parents, teachers, and admins.
 
 The platform supports Secondary 1, Secondary 2, and Secondary 3.
 
@@ -19,7 +19,6 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | BR-01 | The system must allow students to register and access their learning account. |
 | BR-02 | The system must allow parents to register and link to student accounts. |
 | BR-03 | The system must allow teachers to create and manage course content. |
-| BR-04 | The system must allow education centers to manage their teachers and courses. |
 | BR-05 | The system must organize courses by secondary year, subject, term, chapter, and teacher. |
 | BR-06 | The system must allow students to browse and view course details. |
 | BR-07 | The system must support paid access using prepaid codes. |
@@ -33,8 +32,6 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | BR-15 | Admin must approve teachers and courses before they are published. |
 | BR-16 | Admin must be able to view basic reports for users, courses, enrollments, and prepaid codes. |
 | BR-17 | Admin must be able to manually adjust student balance. |
-| BR-18 | Education centers must be able to create teacher accounts. |
-| BR-19 | Admin must be able to link existing teachers to education centers. |
 
 ## 4. Business Rules
 
@@ -51,7 +48,7 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | R-09 | A parent can be linked to one or more students. |
 | R-10 | A student can enroll in many courses. |
 | R-11 | Students can register without parent approval. |
-| R-12 | A teacher can be independent or linked to one education center only. |
+| R-12 | Teachers are individual users in MVP. |
 | R-13 | Each prepaid code can be redeemed for one student only. |
 | R-14 | Redeemed code value is added to the student's balance. |
 | R-15 | Prepaid codes are distributed manually in the MVP. |
@@ -68,7 +65,7 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | R-26 | Prepaid codes have serial numbers for manual distribution tracking. |
 | R-27 | Parent links to student using student ID. |
 | R-28 | Teacher approval requires name, phone, subject, bio, profile image, and documents. |
-| R-29 | Education center can create teacher accounts, and admin can link existing teachers to a center. |
+| R-29 | Admin can create or approve teacher accounts. |
 | R-30 | Teacher sets course price. |
 | R-31 | Admin can edit teacher course prices. |
 | R-32 | Automatic lesson completion happens after watching 90% of the video. |
