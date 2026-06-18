@@ -6,6 +6,17 @@ This document lists business gaps and questions to answer later.
 
 These items do not block the training project now, but they should be clarified before real implementation.
 
+## 1.1 Future Scope Decisions
+
+The following conflicts are intentionally moved to future scope:
+
+- Free course enrollment
+- Course archive/delete/restore lifecycle
+- Notifications
+- Attendance tracking
+- Direct payment gateway
+- Subscriptions and invoices
+
 ## 2. High Priority Gaps
 
 | ID | Gap / Question | Notes |

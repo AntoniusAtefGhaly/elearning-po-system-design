@@ -19,7 +19,7 @@ flowchart TD
     Balance -- Yes --> Enroll["Enroll in Course"]
     Enroll --> MyCourses["My Courses"]
     MyCourses --> Lesson["Lesson Player"]
-    Lesson --> Quiz["MCQ Quiz"]
+    Lesson --> Quiz["Assessment/Quiz"]
     Quiz --> Progress["Progress Page"]
 ```
 
@@ -43,8 +43,8 @@ flowchart TD
     Profile --> CourseList["Course List"]
     CourseList --> Editor["Course Editor"]
     Editor --> Lessons["Lesson Management"]
-    Lessons --> Quiz["Quiz Management"]
-    Quiz --> Submit["Submit Course for Approval"]
+    Lessons --> Assessment["Assessment Management"]
+    Assessment --> Submit["Submit Course for Approval"]
     Submit --> Pending["Pending Admin Approval"]
 ```
 
@@ -63,7 +63,14 @@ flowchart TD
     AdminDashboard --> Reports["Reports"]
 ```
 
-## 6. Notes
+## 6. Story Reference Notes
+
+- Student flow mainly supports US-CM-06, US-EM-01, US-EM-03, US-CM-07, US-AM-05, and US-SM-03.
+- Parent flow mainly supports US-SM-04, US-AM-07, and US-GM-07.
+- Teacher flow mainly supports US-TM-01, US-CM-01 to US-CM-05, and US-AM-01 to US-AM-04.
+- Admin flow mainly supports US-IM-04, US-TM-03, US-TM-04, US-CM-05, Module 08 prepaid stories to add, and Module 11 report stories to add.
+
+## 7. Notes
 
 - These flows are MVP-level flows.
 - Detailed wireframes can be created from these flows later.

@@ -6,21 +6,178 @@ This document describes the main system functions needed for the MVP.
 
 ## 2. System Modules
 
-The MVP includes these modules:
+The system is divided into these business modules:
 
-1. User Account Management
-2. Course Catalog
-3. Course Management
-4. Prepaid Code Management
-5. Enrollment and Access
-6. Learning and Progress
-7. Parent View
-8. Admin Management
-9. Reports
+Detailed module documents 08 to 12 are planned for Phase 2. MVP still includes prepaid code and student balance rules under Payment & Subscription Management.
+
+- Payment & Subscription Management
+- Notification Management
+- Parent Portal
+- Reporting & Analytics
+- Administration
+
+### 2.1 Identity & Access Management
+
+Description: Handles authentication, user accounts, roles, and authorization.
+
+Responsibilities:
+
+- User registration
+- Login/logout
+- Role management: Student, Teacher, Admin, Parent
+- Access control using RBAC
+
+### 2.2 Teacher Management
+
+Description: Manages teacher profiles and their lifecycle within the platform.
+
+Responsibilities:
+
+- Teacher onboarding
+- Profile management
+- Verification
+- Linking teachers to courses
+
+### 2.3 Student Management
+
+Description: Manages student accounts and learning activity.
+
+Responsibilities:
+
+- Student registration
+- Profile management
+- Activity tracking
+- Course associations
+
+### 2.4 Content & Course Management
+
+Description: Responsible for creating, managing, structuring, and publishing educational courses and their learning materials.
+
+Responsibilities:
+
+- Create and edit courses
+- Publish courses
+- Categorize courses
+- Create subjects, modules, and lessons
+- Upload videos and documents
+- Organize course materials
+
+Key entities:
+
+- Course
+- Category
+- Tag
+- Subject
+- Module
+- Lesson
+- Video
+- Document
+- Media File
+
+### 2.5 Enrollment Management
+
+Description: Handles student enrollment in courses.
+
+Responsibilities:
+
+- Enroll students in courses
+- Cancel enrollment
+- Track enrollment status
+
+Key entities:
+
+- Enrollment
+
+### 2.6 Assessment Management
+
+Description: Manages exams, quizzes, and evaluations.
+
+Responsibilities:
+
+- Create exams
+- Create questions
+- Publish assessments
+- Define grading rules
+
+Key entities:
+
+- Exam
+- Question
+- Answer
+
+### 2.7 Grading Management
+
+Description: Handles evaluation and grading of student submissions.
+
+Responsibilities:
+
+- Grade exams
+- Calculate scores
+- Generate results
+
+Key entities:
+
+- Grade
+- Result
+
+### 2.8 Payment & Subscription Management
+
+Description: Handles prepaid codes and student balance in MVP. Payment gateway, subscriptions, and invoices are future scope.
+
+Responsibilities:
+
+- Generate prepaid codes
+- Delete prepaid codes
+- Manage student balance
+
+Key entities:
+
+- Prepaid Code
+- Payment
+
+### 2.9 Notification Management
+
+Description: Future scope. Handles all system notifications.
+
+Responsibilities:
+
+- Email notifications
+- In-app notifications
+- Alerts and reminders
+
+### 2.10 Parent Portal
+
+Description: Provides parents with visibility into student progress.
+
+Responsibilities:
+
+- Track student performance
+- View results
+- Monitor activity
+
+### 2.11 Reporting & Analytics
+
+Description: Provides business intelligence and system analytics.
+
+Responsibilities:
+
+- Student performance reports
+- Teacher performance reports
+- Platform KPIs
+
+### 2.12 Administration
+
+Description: System-wide administration and configuration.
+
+Responsibilities:
+
+- User management
+- System monitoring
+- Platform configuration
 
 ## 3. Functional Requirements
 
-### 3.1 User Account Management
+### 3.1 Identity & Access Management
 
 | ID | Requirement |
 | --- | --- |
@@ -41,20 +198,20 @@ The MVP includes these modules:
 | FR-08 | Students can view course details before enrollment. |
 | FR-09 | Course details show teacher, price, description, lessons, and subject information. |
 
-### 3.3 Course Management
+### 3.3 Content & Course Management
 
 | ID | Requirement |
 | --- | --- |
 | FR-10 | Teachers can create draft courses. |
 | FR-11 | Teachers can add lessons to courses. |
 | FR-12 | Teachers can add video content to lessons. |
-| FR-13 | Teachers can add MCQ quizzes. |
+| FR-13 | Teachers can add assessments/quizzes. |
 | FR-14 | Teachers can submit courses for admin approval. |
 | FR-15 | Admin can approve or reject courses. |
 | FR-15A | Teacher can set course price. |
 | FR-15B | Admin can edit teacher course prices. |
 
-### 3.4 Prepaid Code Management
+### 3.4 Payment & Subscription Management
 
 | ID | Requirement |
 | --- | --- |
@@ -74,7 +231,7 @@ The MVP includes these modules:
 | FR-20I | Admin can cancel an active prepaid code. |
 | FR-20J | Prepaid codes have serial numbers for manual distribution tracking. |
 
-### 3.5 Enrollment and Access
+### 3.5 Enrollment Management
 
 | ID | Requirement |
 | --- | --- |
@@ -83,21 +240,21 @@ The MVP includes these modules:
 | FR-23 | Students buy teacher courses separately. |
 | FR-24 | The system must prevent access to unpublished courses. |
 
-### 3.6 Learning and Progress
+### 3.6 Assessment and Grading Management
 
 | ID | Requirement |
 | --- | --- |
 | FR-25 | Students can watch enrolled video lessons. |
 | FR-26 | Videos should not be directly downloadable. |
 | FR-27 | Students can mark lesson completion manually, and the system can record completion automatically. |
-| FR-28 | Students can solve MCQ quizzes. |
+| FR-28 | Students can solve assessments according to the Assessment Management module scope. |
 | FR-29 | The system tracks student course progress. |
 | FR-29A | Automatic lesson completion happens after watching 90% of the video. |
 | FR-29B | Quiz score is shown to the student. |
-| FR-29C | Student cannot retry a quiz in MVP. |
+| FR-29C | Student can retry a quiz in MVP. |
 | FR-29D | Quiz result affects course progress. |
 
-### 3.7 Parent View
+### 3.7 Parent Portal
 
 | ID | Requirement |
 | --- | --- |
@@ -107,7 +264,7 @@ The MVP includes these modules:
 | FR-33 | Parents can redeem prepaid codes for one linked student at a time. |
 | FR-33A | Parent links to student using student ID. |
 
-### 3.8 Admin Management
+### 3.8 Administration
 
 | ID | Requirement |
 | --- | --- |
@@ -117,7 +274,7 @@ The MVP includes these modules:
 | FR-37 | Admin can manage course approval status. |
 | FR-38 | Admin can manage prepaid codes. |
 
-### 3.9 Reports
+### 3.9 Reporting & Analytics
 
 | ID | Requirement |
 | --- | --- |

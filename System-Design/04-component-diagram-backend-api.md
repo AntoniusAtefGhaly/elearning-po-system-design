@@ -24,7 +24,7 @@ The Backend API is the server-side application responsible for:
 - Transactions
 - Data validation
 - API contracts
-- Integration with database, cache, video provider, and notification provider
+- Integration with database, cache, video provider, and future notification provider
 
 Recommended internal style:
 
@@ -67,7 +67,6 @@ Responsibilities:
 - Enrollment checks
 - Parent-student link checks
 - Teacher ownership checks
-- Center-teacher relationship checks
 - Admin permission checks
 
 Important:
@@ -81,7 +80,6 @@ Responsibilities:
 - Student accounts
 - Parent accounts
 - Teacher profile data
-- Education center profile data
 - Admin user management
 - Teacher approval profile data
 
@@ -153,11 +151,11 @@ Enrollment creation and balance deduction should happen in one database transact
 
 Responsibilities:
 
-- MCQ quiz definition
+- Assessment/quiz definition
 - Quiz answer submission
 - Quiz scoring
 - Quiz attempt storage
-- No-retry rule for MVP
+- Quiz retry support for MVP
 
 ### Progress Component
 
@@ -167,7 +165,7 @@ Responsibilities:
 - Manual lesson completion
 - Automatic completion after watching 90% of video
 - Course progress calculation
-- Progress data used by students, parents, teachers, centers, and admins
+- Progress data used by students, parents, teachers, and admins
 
 ### Reports Component
 
@@ -178,7 +176,6 @@ Responsibilities:
 - Admin teacher sales reports
 - Admin student progress reports
 - Teacher own-course reports
-- Education center reports for linked teachers/courses
 
 Important:
 
@@ -219,7 +216,7 @@ The database is the source of truth. Data access should support reliable transac
 Responsibilities:
 
 - Video provider API client
-- Notification provider API client
+- Future notification provider API client
 - Future payment provider API client
 
 ## 4. C4 Component Diagram
@@ -249,7 +246,7 @@ flowchart TB
     DB[("Relational Database")]
     Cache[("Cache")]
     Video["Video Streaming Service"]
-    Notify["Email/SMS Provider"]
+    Notify["Future Email/SMS Provider"]
 
     Web -->|"HTTPS JSON API"| Controllers
 
@@ -303,7 +300,7 @@ flowchart TB
     DataAccess --> DB
     DataAccess --> Cache
     Integrations --> Video
-    Integrations --> Notify
+    Integrations -. "Future notifications" .-> Notify
 ```
 
 ## 5. Component Rules
@@ -346,7 +343,6 @@ Important checks:
 - Student can access own enrollments and progress.
 - Parent can access only linked students.
 - Teacher can access only own courses.
-- Center can access only linked teacher/course data.
 - Admin can manage platform-level data.
 - Course content access requires enrollment and published course status.
 
@@ -520,8 +516,8 @@ Example:
 | Controllers become too large. | Developers put business logic in endpoints. | Use application use cases/services. |
 | Authorization is duplicated inconsistently. | Each component writes its own checks casually. | Centralize common authorization policies. |
 | Balance logic is scattered. | Course enrollment and admin screens both update balance directly. | Balance component owns all balance changes. |
-| Reports leak data. | Report filters forget teacher/center scope. | Reports must call Authorization/scoping policies. |
-| Quiz retry rule is frontend-only. | User can call API directly. | Enforce unique attempt rule in backend/database. |
+| Reports leak data. | Report filters forget teacher scope. | Reports must call authorization/scoping policies. |
+| Quiz retry handling is unclear. | Attempts may overwrite each other or progress may be wrong. | Store each attempt separately with attempt number and timestamp. |
 | Video access links are too long-lived. | Signed URLs are configured poorly. | Use short expiration and provider permissions. |
 
 ## 9. Step 04 Conclusion
@@ -539,4 +535,3 @@ The most important components to design carefully are:
 7. Audit Logs
 
 The next C4 step is the Code Diagram. In practice, architects often create code diagrams only for complex or risky parts. For this project, the best candidate is the prepaid code redemption and enrollment purchase flow because it contains money-like operations and transaction rules.
-

@@ -42,7 +42,6 @@ Every sensitive endpoint must check:
 - Resource ownership
 - Parent-student link
 - Teacher-course ownership
-- Center-teacher relationship
 - Enrollment status
 - Course publication status
 
@@ -71,7 +70,6 @@ If the client sends:
 studentId
 courseId
 teacherId
-centerId
 ```
 
 The backend must verify the current user is allowed to act on those IDs.
@@ -114,7 +112,6 @@ Example:
 /api/students
 /api/parents
 /api/teachers
-/api/centers
 /api/curriculum
 /api/courses
 /api/lessons
@@ -140,7 +137,7 @@ GET  /api/me
 Notes:
 
 - Student registration does not require parent approval.
-- Teacher and education center accounts require approval, so their creation may be handled by admin or center workflows.
+- Teacher accounts require admin approval.
 - Password reset is likely needed later, even if not explicitly documented.
 
 ## 6. Student and Parent APIs
@@ -159,7 +156,6 @@ Authorization:
 - Student can access own data.
 - Parent can access linked student data.
 - Teacher can access limited progress only for students enrolled in own courses.
-- Center can access limited progress only for linked teacher courses.
 - Admin can access all.
 
 ### Parent
@@ -182,9 +178,7 @@ MVP rule:
 
 Parent links to student using student ID/code. No approval workflow in MVP.
 
-## 7. Teacher and Center APIs
-
-### Teacher
+## 7. Teacher APIs
 
 ```text
 GET   /api/teachers/{teacherId}
@@ -198,24 +192,6 @@ Authorization:
 
 - Teacher can manage own profile and courses.
 - Admin can manage all teachers.
-- Center can view linked teacher data.
-
-### Education Center
-
-```text
-GET  /api/centers/{centerId}
-PATCH /api/centers/{centerId}
-POST /api/centers/{centerId}/teachers
-POST /api/centers/{centerId}/teacher-links
-GET  /api/centers/{centerId}/teachers
-GET  /api/centers/{centerId}/reports
-```
-
-Authorization:
-
-- Center can manage its own linked teachers.
-- Admin can link existing teachers to centers.
-- Teacher can belong to only one center.
 
 ## 8. Curriculum APIs
 
@@ -283,7 +259,6 @@ DELETE /api/teacher/lessons/{lessonId}
 Authorization:
 
 - Teacher can manage only own courses.
-- Center-created teacher accounts still act through teacher ownership rules.
 
 ### Admin Course Approval
 
@@ -508,7 +483,7 @@ Rules:
 
 - Student must be enrolled in the course.
 - Quiz must belong to the course or lesson.
-- Student cannot retry quiz in MVP.
+- Student can retry quiz in MVP.
 - Score is shown to student.
 - Quiz result affects progress.
 
@@ -533,7 +508,6 @@ Rules:
 - Student can update own progress only for enrolled courses.
 - Parent can read linked student progress.
 - Teacher can read progress for students enrolled in own courses.
-- Center can read progress for linked teacher courses.
 - Admin can read all progress.
 
 ## 15. Reports APIs
@@ -552,14 +526,6 @@ GET /api/admin/reports/student-progress
 ```text
 GET /api/teacher/reports/enrollments
 GET /api/teacher/reports/progress
-```
-
-### Center Reports
-
-```text
-GET /api/centers/{centerId}/reports/enrollments
-GET /api/centers/{centerId}/reports/progress
-GET /api/centers/{centerId}/reports/teacher-sales
 ```
 
 Rules:
@@ -609,8 +575,8 @@ For every endpoint, define:
 | `POST /api/prepaid-codes/redeem` | Duplicate redemption or wrong student balance | Transaction, unique constraints, parent/student authorization |
 | `POST /api/courses/{courseId}/enrollments` | Free access or negative balance | Transaction, balance lock, enrollment uniqueness |
 | `POST /api/lessons/{lessonId}/playback-access` | Paid video leakage | Enrollment check, short-lived video URL/token |
-| `POST /api/quizzes/{quizId}/attempts` | Quiz retry or invalid quiz access | Enrollment check, unique quiz attempt |
-| `GET /api/students/{studentId}/progress` | Parent/teacher/center data leakage | Relationship-based authorization |
+| `POST /api/quizzes/{quizId}/attempts` | Invalid quiz access or incorrect retry handling | Enrollment check, store each retry as a separate attempt |
+| `GET /api/students/{studentId}/progress` | Parent/teacher data leakage | Relationship-based authorization |
 | `POST /api/admin/students/{studentId}/balance-adjustments` | Admin abuse or support mistake | Admin permission, reason, audit log |
 | `POST /api/admin/courses/{courseId}/approve` | Unreviewed content becomes visible | Admin permission, status transition, audit log |
 
@@ -641,4 +607,3 @@ The most important API rule is:
 The highest-risk endpoints are prepaid code redemption, enrollment purchase, video playback access, quiz attempt submission, progress access, and admin balance changes.
 
 The next step is authentication and authorization design.
-

@@ -2,25 +2,25 @@
 
 ## 1. System Goal
 
-Build an Arabic-first E-learning website for Egyptian secondary school students where students can buy teacher courses using prepaid codes, watch recorded lessons, solve MCQ quizzes, and track learning progress.
+Build an Arabic-first E-learning website for Egyptian secondary school students where students can buy teacher courses using prepaid codes, watch recorded lessons, solve assessments/quizzes, and track learning progress.
 
-The system also allows parents to monitor linked students, teachers to publish and manage courses, education centers to manage their teachers, and admins to control approvals, prepaid codes, balances, reports, and platform setup.
+The system also allows parents to monitor linked students, teachers to publish and manage courses, and admins to control approvals, prepaid codes, balances, reports, and platform setup.
 
 ## 2. System Scope
 
 ### In Scope
 
-- Student, parent, teacher, education center, and admin accounts
-- Teacher and education center approval
+- Student, parent, teacher, and admin accounts
+- Teacher approval
 - Course catalog organized by year, subject, term, chapter, and teacher
 - Teacher course creation and admin course approval
 - Recorded video lessons
-- MCQ quizzes
+- Assessments/quizzes
 - Student progress tracking
 - Prepaid code generation, redemption, and balance management
 - Paid course enrollment
 - Parent-student linking
-- Reports for admins, teachers, and education centers
+- Reports for admins and teachers
 - Admin audit trail for important actions
 - Arabic web interface for mobile and desktop browsers
 
@@ -43,8 +43,7 @@ The system also allows parents to monitor linked students, teachers to publish a
 1. Student
 2. Parent
 3. Teacher
-4. Education Center
-5. Admin
+4. Admin
 
 ### External System Actors
 
@@ -58,7 +57,7 @@ The system also allows parents to monitor linked students, teachers to publish a
 
 - Users can log in and log out.
 - Students and parents can create accounts.
-- Teachers and education centers require admin approval.
+- Teachers require admin approval.
 - Users can update basic profile information.
 - The system must enforce role-based access.
 
@@ -69,10 +68,10 @@ The system also allows parents to monitor linked students, teachers to publish a
 - Students can view course details before enrollment.
 - Course details include teacher, price, description, lessons, and subject information.
 
-### Course Management
+### Content & Course Management
 
 - Teachers can create draft courses.
-- Teachers can add lessons, video content, and MCQ quizzes.
+- Teachers can add lessons, video content, and assessments/quizzes.
 - Teachers can submit courses for admin approval.
 - Admin can approve or reject courses.
 - Teacher can set course price, and admin can edit teacher course prices.
@@ -101,21 +100,21 @@ The system also allows parents to monitor linked students, teachers to publish a
 - Videos should not be directly downloadable.
 - Students can manually mark lesson completion.
 - The system can automatically complete a lesson after watching 90% of the video.
-- Students can solve MCQ quizzes.
-- Student cannot retry a quiz in MVP.
+- Students can solve assessments/quizzes.
+- Student can retry a quiz in MVP.
 - Quiz score is shown to the student.
 - Quiz result affects course progress.
 
-### Parent View
+### Parent Portal
 
 - Parents can link to student accounts using student ID.
 - Parents can view linked student enrollments.
 - Parents can view linked student progress.
 - Parents can redeem prepaid codes for one linked student at a time.
 
-### Admin and Reports
+### Administration and Reporting & Analytics
 
-- Admin can manage users, teachers, education centers, and curriculum data.
+- Admin can manage users, teachers, and curriculum data.
 - Admin can manage course approval status.
 - Admin can manage prepaid codes.
 - Admin can view course enrollment reports.
@@ -123,7 +122,6 @@ The system also allows parents to monitor linked students, teachers to publish a
 - Admin can view teacher sales reports.
 - Admin can view student progress reports.
 - Teachers can view reports for their own courses.
-- Education centers can view reports for their own teachers and courses.
 
 ## 5. Improved Non-Functional Requirements
 
@@ -131,7 +129,7 @@ The system also allows parents to monitor linked students, teachers to publish a
 | --- | --- | --- |
 | NFR-01 | The website must support Arabic RTL layout and Arabic content across all MVP screens. | UI components, layout, validation messages, and database text fields must support Arabic. |
 | NFR-02 | The website must work on modern mobile and desktop browsers. | Responsive frontend design is required. |
-| NFR-03 | Users must only access data allowed by their role and relationship to the data. | Authorization must check role, ownership, center relationship, parent-student link, enrollment, and course status. |
+| NFR-03 | Users must only access data allowed by their role and relationship to the data. | Authorization must check role, ownership, parent-student link, enrollment, and course status. |
 | NFR-04 | Video playback should start quickly and remain stable for normal student usage. | Video files should be served through a video hosting/streaming service or CDN, not directly from the application server. |
 | NFR-05 | Important admin actions must be recorded with actor, action, target, timestamp, and relevant before/after data. | Add audit logging for approval, prepaid code, balance, and user-management actions. |
 | NFR-06 | The system should support at least 1,000 concurrent active users for the MVP target. | Backend should be stateless where possible, database queries must be indexed, and heavy video traffic must be offloaded. |
@@ -159,7 +157,7 @@ Architecture impact:
 
 Why it matters:
 
-Students must only access paid courses after enrollment. Teachers, centers, parents, and admins also need different visibility rules.
+Students must only access paid courses after enrollment. Teachers, parents, and admins also need different visibility rules.
 
 Architecture impact:
 
@@ -168,7 +166,6 @@ Architecture impact:
 - Course access should check enrollment, course approval status, and lesson ownership.
 - Parent access should require an explicit parent-student link.
 - Teacher reports should be scoped to their own courses.
-- Center reports should be scoped to linked teachers/courses.
 
 ### Driver 3 - Video Playback and Protection
 
@@ -194,7 +191,7 @@ Architecture impact:
 
 - Store lesson progress per student and lesson.
 - Store quiz attempts and scores as durable records.
-- Enforce "no retry in MVP" using backend rules, not only frontend UI.
+- Store each quiz retry as a separate attempt so progress and grading remain auditable.
 - Use clear rules for progress calculation.
 - Protect progress updates from invalid access.
 
@@ -222,9 +219,8 @@ Architecture impact:
 | Videos should not be directly downloadable. | Public video links may be shared. | Signed expiring URLs or provider-level private video access. |
 | Parent views linked student progress. | Parent may view unlinked student data. | Parent-student link table and authorization checks. |
 | Teacher views course reports. | Teacher may see another teacher's data. | Ownership checks on every report query. |
-| Center views teacher/course reports. | Center may see data for unlinked teachers. | Center-teacher relationship checks. |
 | Admin manually adjusts balance. | Mistakes or abuse may affect money-like records. | Audit log, reason field, balance transaction ledger. |
-| Quiz retry is not allowed. | Student may submit multiple attempts by refreshing or calling API directly. | Backend unique rule per student and quiz. |
+| Quiz retry is allowed. | Attempts may be overwritten or counted incorrectly. | Store separate quiz attempts with attempt number and timestamp. |
 
 ## 8. Initial Architecture Recommendation
 
@@ -247,20 +243,22 @@ Use a Modular Monolith with Clean Architecture boundaries.
 - The team would need more DevOps, monitoring, deployment, and failure-handling maturity.
 - Most modules still need shared business rules and coordinated data.
 
-## 9. Proposed Backend Modules
+## 9. Proposed System Modules
 
-1. Identity and Access
-2. Users and Profiles
-3. Teachers and Education Centers
-4. Curriculum
-5. Courses and Lessons
-6. Video Metadata and Access Tokens
-7. Prepaid Codes and Balance
-8. Enrollment
-9. Learning Progress
-10. Quizzes
-11. Reports
-12. Audit Logs
+Use the same module boundaries as the business documentation:
+
+1. Identity & Access Management
+2. Teacher Management
+3. Student Management
+4. Content & Course Management
+5. Enrollment Management
+6. Assessment Management
+7. Grading Management
+8. Payment & Subscription Management
+9. Notification Management
+10. Parent Portal
+11. Reporting & Analytics
+12. Administration
 
 ## 10. Data Storage Recommendation
 
@@ -268,7 +266,7 @@ Use a relational database as the primary database.
 
 Reasons:
 
-- The domain has strong relationships between students, parents, teachers, centers, courses, lessons, enrollments, quizzes, and payments.
+- The domain has strong relationships between students, parents, teachers, courses, lessons, enrollments, quizzes, and payments.
 - Prepaid code redemption and student balance need transactions.
 - Reports require structured queries.
 - Authorization depends on relationships and ownership.
@@ -284,10 +282,8 @@ Possible later additions:
 1. What exact video hosting/streaming provider will be used?
 2. What does "stable video playback" mean in measurable terms?
 3. How many concurrent users should the MVP support at launch?
-4. Should education center data be treated as tenant-isolated data?
-5. Can a student belong to more than one education center, or are students platform-wide?
-6. Should admin balance adjustment require a reason and approval, or only an audit log?
-7. Should parent-student linking require student confirmation in a later phase?
+4. Should admin balance adjustment require a reason and approval, or only an audit log?
+5. Should parent-student linking require student confirmation in a later phase?
 8. Are reports expected to be real-time, near-real-time, or daily summaries?
 9. Should the system support multiple devices watching the same course at the same time?
 10. What is the required retention period for audit logs and financial-like balance history?
@@ -299,4 +295,3 @@ The first architecture decision is to keep the MVP as a Modular Monolith with cl
 The highest-risk areas are prepaid code redemption, student balance, enrollment, paid content access, video access protection, role-based permissions, and progress/quiz correctness.
 
 The next design step is the System Context Diagram.
-

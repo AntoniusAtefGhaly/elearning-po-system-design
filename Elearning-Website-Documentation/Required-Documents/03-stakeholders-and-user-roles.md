@@ -26,7 +26,7 @@ Can:
 - Redeem prepaid code
 - Enroll in courses
 - Watch enrolled lessons
-- Solve basic MCQ quizzes
+- Solve assessments/quizzes
 - View own progress
 
 Cannot:
@@ -56,7 +56,7 @@ Can:
 
 - Manage profile
 - Create draft courses
-- Add lessons and MCQ quizzes
+- Add lessons and assessments/quizzes
 - Submit courses for approval
 - View enrolled students and progress for own courses
 

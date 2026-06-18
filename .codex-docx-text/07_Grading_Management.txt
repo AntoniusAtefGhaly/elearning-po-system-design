@@ -1,0 +1,141 @@
+﻿E-Learning Platform - Module Business Document
+Module 4.7: Grading ManagementBusiness Analysis Document
+1. Module Purpose
+Grading Management handles the evaluation of student exam submissions, calculation of scores, generation of results, review of grading outcomes, publication of approved results, and auditing of grading changes.
+2. Scope
+• Grade MCQ questions automatically• Grade True/False questions automatically• Allow teachers to grade Essay questions manually• Calculate final scores and percentages• Determine pass/fail status• Generate and publish results• Modify results with justification• Maintain audit history
+• Overall course grade calculation as a weighted average of all exam grades
+• Grade summary dashboard for teachers (score distribution, pass rate, averages)
+• Integration with Assessment Management (submissions), Student Management (progress), and Reporting & Analytics modules
+3. Actors
+Actor
+Need
+Student
+View published exam results
+Teacher
+Grade exams, review results, publish results, modify results when necessary
+Parent
+View linked student's exam grades, quiz scores, pass/fail results, and overall course grade across all enrolled courses
+4. Business Rules
+Rule ID
+Business Rule
+BR-01
+Students cannot receive results before exam submission.
+BR-02
+MCQ and True/False questions shall be graded automatically.
+BR-03
+Essay questions require teacher grading.
+BR-04
+Results shall not be generated until grading is completed.
+BR-05
+Scores cannot exceed the maximum exam score.
+BR-06
+Students can view only their own results.
+BR-07
+Teachers can grade only exams belonging to their courses.
+BR-08
+System shall calculate percentages automatically.
+BR-09
+Pass/Fail status shall be determined using the exam passing score.
+BR-10
+All grading actions shall be logged.
+BR-11
+Generated results shall remain hidden until published by the teacher.
+BR-12
+Teachers may publish results for an entire exam in a single action.
+BR-13
+Published results may be modified if a valid reason is provided.
+BR-14
+All modifications shall be recorded for auditing purposes.
+BR-15
+Submitted exams create results with PendingGrading status.
+BR-16
+Results move to Draft after grading completion.
+BR-17
+Only Published results are visible to students.
+BR-18
+A parent can only view grade data for students explicitly linked to their account.
+BR-19
+Parents have read-only access to grade information and cannot perform any grading actions.
+5. Functional Requirements
+ID
+Requirement
+FR-01
+Automatically grade MCQ and True/False questions
+FR-02
+Allow manual grading of Essay questions
+FR-03
+Calculate final score and percentage
+FR-04
+Generate results after grading completion
+FR-05
+Determine pass/fail status
+FR-06
+Allow teachers to review results
+FR-07
+Allow teachers to publish exam results
+FR-08
+Prevent students from viewing unpublished results
+FR-09
+Allow teachers to modify published results
+FR-10
+Require modification reason
+FR-11
+Record modifications in audit log
+FR-12
+Recalculate results after modification
+FR-13
+The system shall provide teachers with a grade summary dashboard showing score distribution, pass rate, and average score per exam.
+FR-14
+The system shall expose grade data to the Student Management and Reporting modules via internal integration
+FR-15
+The system shall send notifications after a final result is generated.
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-01
+As a student, I want automatic grading.
+Objective questions graded automatically.
+US-02
+As a teacher, I want to grade essays.
+Teacher can assign and save scores.
+US-03
+As a student, I want to view results.
+Published results only are visible.
+US-04
+As an admin, I want to monitor grading.
+Audit information is available.=>
+US-05
+As a teacher, I want to publish results.
+Students see only approved grades.
+US-06
+As a teacher, I want to modify results with reason.
+Reason mandatory and audit logged.
+US-07
+As a parent, I want to view my child's grades so that I can monitor their academic performance.
+Parent logs in and navigates to the grades section. Parent can view exam grades, quiz scores, pass/fail status, and overall course grade for their linked student. Parent cannot modify any grade data.
+US-08
+As a student, I want to browse my resolved exam results so that I can monitor my learning progress
+Request returns full matches for target StudentId
+7. Data Objects
+Object
+Important Fields
+Exam Grade
+Grade ID, Student ID, Exam ID, Attempt Number, Score, Pass/Fail Status, Grading Status
+Question Grade
+Question Grade ID, Grade ID, Question ID, Score, Graded By
+Result Modification Log
+Id, ResultId, TeacherId, OldScore, NewScore, Reason, ModifiedAt
+Result
+Id, StudentId, ExamId, Score, MaxScore, Percentage, IsPassed,Status (PendingGrading, Draft, Published), GeneratedAt, PublishedAt
+Course Grade
+Course Grade ID, Student ID, Course ID, Weighted Average, Pass/Fail Status
+Grading Audit Log
+Log ID, Grade ID, Action Type, Performed By, Action At, Notes
+8. Workflow
+Teacher Creates Exam↓Student Takes Exam↓Student Submits Exam↓Result Status = PendingGrading↓System Grades MCQ & True/False↓Teacher Grades Essay Questions↓System Generates Result↓Result Status = Draft↓Teacher Reviews Results↓Teacher Publishes Exam Results↓Result Status = Published↓Students Can View Results
+Result Modification Workflow
+Teacher Requests Result Modification↓System Requires Modification Reason↓Teacher Updates Result↓System Recalculates Score & Percentage↓System Creates Audit Log Record↓Updated Result Remains Visible To Student
+9. Future Enhancements
+FE-01 Multiple Exam Attempts FE-02 Exam Review FE-03 Teacher Feedback FE-04 Advanced Analytics

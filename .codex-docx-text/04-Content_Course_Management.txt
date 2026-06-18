@@ -1,0 +1,180 @@
+﻿E-Learning Platform
+Business Analysis Document
+Module 04 – Content & Course Management
+1. Module Purpose
+Content & Course Management is responsible for creating, organizing, publishing, delivering, and maintaining educational courses and learning materials.
+Teachers can build structured courses using subjects, modules, lessons, and content items, then publish them for students. The module also controls course visibility, content access, learning progress tracking, and automated content review before publication.
+2. Scope
+Create, edit, archive, and delete courses
+Manage course information such as title, description, thumbnail, categories, and tags
+Organize course structure using Subjects, Modules, and Lessons
+Upload and manage educational materials
+Preview courses before publishing
+Publish and archive courses
+Automated content review before course publication
+Control course visibility and accessibility
+Track lesson attendance and learning progress
+Allow students to browse and view available courses
+Support free and paid courses
+Allow enrolled students to access course content
+Support lesson quizzes for lesson completion and progression tracking 
+3. Actors
+Actor
+Need
+Teacher
+Create, organize, publish, update, archive, and monitor courses and learning content
+Student
+Browse courses, access enrolled content, view learning materials, and track progress
+4. Business Rules
+Rule ID
+Business Rule
+BR-01
+Only approvedteachers can create and manage courses.
+BR-02
+A teacher is the sole owner of their courses and content.
+BR-03
+A lesson must belong to a module, a module must belong to a subject, and a subject must belong to a course.
+BR-04
+A course must contain at least one subject, module, lesson, and content item before publishing.
+BR-05
+Draft courses are visible only to their owners.
+BR-06
+Published courses become available to eligible students.
+BR-07
+Archived courses cannot be edited or enrolled in.
+BR-08
+Teachers may restore archived courses.
+BR-09
+Course deletion is performed as a soft delete and can be restored within the allowed period.
+BR-10
+Categories and tags are used to classify and organize courses.
+BR-11
+Students can access course content only after enrollment or obtaining access rights.
+BR-12
+Unenrolled students may view course information and syllabus only.
+BR-13
+Students can only access content included in courses they are authorized to access.
+BR-14
+All courses must pass an automated content review before publication.
+BR-15
+Courses that violate platform content policies cannot be published until the issues are resolved.
+BR-16
+Each lesson may include an MCQ quiz, and students must achieve the minimum passing score to unlock the next lesson.
+BR-17
+Quiz grading shall be performed automatically for MCQ questions, and the achieved score shall be recorded for the student.
+BR-18
+Lesson attendance is recorded based on student engagement with lesson content.
+BR-19
+Deleted content should be logged for auditing purposes.
+5. Functional Requirements
+ID
+Requirement
+FR-01
+The system shall allow teachers to create courses.
+FR-02
+The system shall allow teachers to update course information.
+FR-03
+The system shall allow teachers to preview courses before publishing.
+FR-04
+The system shall allow teachers to publish courses.
+FR-05
+The system shall allow teachers to archive and restore courses.
+FR-06
+The system shall allow teachers to delete courses.
+FR-07
+The system shall track course publication status
+FR-08
+The system shall allow teachers to create, edit, reorder, and remove subjects, modules and lessons.
+FR-09
+The system shall allow Teachers to build discrete Lesson nodes nested inside assigned Modules
+FR-10
+The system shall allow teachers to upload and manage educational content within lessons.
+FR-11
+The system shall allow teachers to categorize courses using categories and tags.
+FR-12
+The system shall allow students to browse published courses.
+FR-13
+The system shall allow students to search courses by title, category, or tag.
+FR-14
+The system shall allow students to view course details and tutorial information.
+FR-15
+The system shall allow enrolled students to access course content.
+FR-16
+The system shall track student lesson attendance and progress.
+FR-17
+The system shall allow teachers to monitor student attendance and course progress.
+FR-18
+The system shall perform automated content review when a teacher submits a course for publishing.
+FR-19
+The system shall prevent publication of content that violates platform policies.
+FR-20
+The system shall provide feedback to teachers when a course fails content review.
+FR-21
+The system shall allow teachers to create a lesson quiz using MCQ questions.
+FR-22
+The system shall automatically grade lesson quizzes and calculate student scores.
+FR-23
+The system shall unlock the next lesson automatically when the student achieves the required passing score.
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-01
+As a teacher, I want to register a basic course draft so that I can map out my curriculum shell safely before adding resource assets.
+- Course row is persisted under a Draft status enum.- Title, descriptive texts, and prices are accurately assigned.
+US-02
+As a teacher, I want to create a course so that I can provide learning content to students.
+Teacher enters required information, saves the course, and the course is created successfully.
+US-03
+As a teacher, I want to organize my course into subjects, modules, and lessons so that content is structured and easy to follow.
+Teacher can add, edit, reorder, and remove course structure elements.
+US-04
+As a teacher, I want to upload educational materials so that students can access learning resources.
+Uploaded content is attached to lessons and becomes available after publication.
+US-05
+As a teacher, I want my course to be reviewed before publishing so that it complies with platform policies.
+When the teacher submits a course for publishing, the system performs an automated review. If violations are detected, publishing is blocked and feedback is provided. Otherwise, the course becomes eligible for publication.
+US-06
+As a teacher, I want to publish a course so that students can access it.
+Course meets publishing requirements and becomes visible to eligible students.
+US-07
+As a teacher, I want to monitor student attendance and progress so that I can evaluate engagement.
+Teacher can view attendance status and progress information for enrolled students.
+US-08
+As a student, I want to browse available courses so that I can find learning opportunities.
+Student can search and view course details and syllabus information.
+US-09
+As a student, I want to access enrolled courses so that I can study the learning materials.
+Student can open and use content only for courses they are authorized to access.
+US-10
+As a student, I want to complete a lesson quiz so that I can unlock the next lesson and continue my learning path.
+Student submits the lesson quiz.
+The system grades the quiz automatically.
+The student's score is displayed immediately.
+If the passing score is achieved, the next lesson is unlocked.
+If the student fails, the next lesson remains locked.
+7. Data Objects
+Object
+Important Fields
+Course
+ID, Title, Description, Status, Teacher ID
+Category
+ID, Name
+Tag
+ID, Name
+Subject
+ID, Course ID, Name, Order
+Module
+ID, Subject ID, Name, Order
+Lesson
+ID, Module ID, Title, Order
+Content Item
+ID, Lesson ID, Title, Type
+Media File
+ID, Lesson ID, File Type , FileUrl , FileSizeInBytes
+Lesson Quiz
+ID, Lesson ID, Title, Passing Score, Question Text
+Quiz Question
+ID, Quiz ID, Question Text, Choices, Correct Answer
+Attendance
+Student ID, Lesson ID, Attendance Status, Progress Percentage, Quiz Score

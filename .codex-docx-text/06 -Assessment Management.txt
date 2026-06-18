@@ -1,0 +1,123 @@
+﻿E-Learning Platform - Module Business Document
+Module 06: Assessment Management
+Business Analysis Document
+1. Module Purpose
+Assessment Management handles the creation, management, publishing, evaluation, grading, feedback, and reporting of quizzes, assignments, and exams within the e-learning platform.
+2. Scope
+Exam Management
+Quiz Management
+Assignment Management
+Question Management
+Answer Management
+Assessment Publishing
+Assessment Scheduling
+Student Submissions
+Result Publishing
+Feedback Management
+Grading Management
+Academic Performance Tracking
+Retake Management
+Assessment Reports
+3. Actors
+Actor
+Need
+Student
+Take quizzes and exams, submit assignments, view grades and feedback
+Teacher
+Create assessments, questions, review submissions, publish results
+Parent
+Monitor student assessment results
+Admin
+Manage assessment settings and reports
+4. Business Rules
+Rule ID
+Business Rule
+BR-01
+Only approved teachers can create assessments.
+BR-02
+Assessments can only be published if they contain at least one question.
+BR-03
+Students can only access assessments assigned to their enrolled courses.
+BR-04
+Students cannot submit answers after the assessment deadline.
+BR-05
+Each assessment must have a defined grading rule.
+BR-06
+Assessment results must be stored for reporting purposes.
+BR-07
+Students can only attempt an assessment within the allowed time window.
+BR-08
+Published assessments cannot be modified while active.
+BR-09
+Quiz timers shall be enforced automatically by the system.
+BR-10
+Late submissions may receive penalties based on course policy.
+BR-11
+Final exams cannot be retaken without teacher approval.
+5. Functional Requirements
+ID
+Requirement
+FR-01
+The system shall allow teachers to create exams.
+FR-02
+The system shall allow teachers to create quizzes.
+FR-03
+The system shall allow teachers to create assignments.
+FR-04
+The system shall allow teachers to add questions to assessments.
+FR-05
+The system shall allow teachers to publish assessments.
+FR-06
+The system shall allow students to submit answers.
+FR-07
+The system shall automatically calculate assessment scores.
+FR-08
+The system shall store student assessment results.
+FR-09
+The system shall allow teachers to review submissions.
+FR-10
+The system shall generate assessment reports.
+FR-11
+The system shall display grades and feedback for students.
+FR-12
+The system shall support file uploads for assignment submissions.
+FR-13
+The system shall track assessment attempts and completion status.
+FR-14
+The system shall notify students about upcoming assessments and deadlines.
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-01
+As a teacher, I want to create an exam so that I can evaluate student knowledge.
+Teacher enters exam details. Exam is saved successfully. Exam appears in teacher dashboard.
+US-02
+As a teacher, I want to add questions to an assessment so that students can answer them.
+Questions are created successfully. Questions are linked to the assessment.
+US-03
+As a student, I want to take quizzes and exams so that I can evaluate my learning progress.
+Student accesses available assessments. Student submits answers successfully.
+US-04
+As a teacher, I want to review submissions so that I can evaluate student performance.
+Teacher can review submissions. Teacher can assign grades and feedback.
+US-05
+As a parent, I want to view my child’s assessment results so that I can monitor academic performance.
+Parent can access linked student results.
+7. Data Objects
+Object
+Important Fields
+Assessment
+AssessmentId, CourseId, Title, Description, Type, StartDate, DueDate, TotalMarks, Status
+Question
+QuestionId, AssessmentId, QuestionText, QuestionType, Marks
+Answer
+AnswerId, QuestionId, StudentId, AnswerText
+Submission
+SubmissionId, StudentId, AssessmentId, FileUrl, SubmittedAt, Status
+Result
+ResultId, StudentId, AssessmentId, Score, Grade, Feedback, PublishedDate
+Feedback
+FeedbackId, SubmissionId, TeacherId, Comments, CreatedAt
+GradingRule
+RuleId, AssessmentId, PassingScore, Weight
