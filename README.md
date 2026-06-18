@@ -10,9 +10,9 @@ The project is not intended to be a real commercial launch. It is designed to he
 
 The product is an Arabic-first e-learning website for Egyptian secondary school students.
 
-Students can browse teacher courses, redeem prepaid codes, buy courses using student balance, watch recorded lessons, solve MCQ quizzes, and track progress.
+Students can browse teacher courses, redeem prepaid codes, buy courses using student balance, watch recorded lessons, solve assessments/quizzes, and track progress.
 
-Teachers and education centers can publish courses based on the official Egyptian curriculum. Admins manage approvals, users, prepaid codes, balances, reports, and platform settings.
+Teachers can publish courses based on the official Egyptian curriculum. Admins manage approvals, users, prepaid codes, balances, reports, and platform settings.
 
 ## Learning Goals
 
@@ -79,4 +79,3 @@ Current focus:
 ## Notes
 
 This repository intentionally keeps the documentation simple and beginner-friendly. The goal is to learn the process clearly without over-engineering.
-

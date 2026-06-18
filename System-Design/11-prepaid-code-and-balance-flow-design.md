@@ -443,8 +443,8 @@ Code cancellation
 ### Can Be Non-Transactional or Async
 
 ```text
-Notification after code redemption
-Notification after enrollment
+Future notification after code redemption
+Future notification after enrollment
 Report refresh
 Export generation
 ```
@@ -639,4 +639,3 @@ The most important rules are:
 ```
 
 The next step is enrollment and course access control design.
-

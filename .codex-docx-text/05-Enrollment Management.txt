@@ -1,0 +1,176 @@
+﻿MODULE 05
+Enrollment Management
+Business Analysis Document  |  E-Learning Platform
+1. Module Purpose
+Enrollment Management acts as the secure gateway between Payment Management and Content Access. It handles the complete lifecycle of registering students into courses, enforcing access rights based on enrollment status, tracking learning progress, and managing modifications (cancellations, refunds, and status changes). It ensures that only students with valid, active enrollments can access paid course materials.
+2. Scope
+#
+In-Scope Item
+1
+Course enrollment processing for students (both paid and free courses).
+2
+Enrollment status lifecycle tracking (Active, Completed, Cancelled, Refunded, Pending Refund).
+3
+Duplicate enrollment prevention logic.
+4
+Enrollment cancellation and refund request processing based on platform policies.
+5
+Decoupling of cancellation (access revocation) and refund (money return) for policy violations.
+6
+Access control enforcement (Gatekeeper) based on enrollment status.
+7
+Enrollment history and comprehensive audit logging.
+8
+Providing Teachers with a Read-Only view of enrolled students and their progress per course.
+9
+Handling enrollment continuity when a teacher is suspended or a course is archived.
+10
+Progress tracking (percentage of course content accessed) for completion and refund logic.
+3. Actors
+Actor
+Need
+Student
+Enroll in courses (free/paid), view enrolled courses dashboard, request cancellation within the allowed period, access course content, and track learning progress.
+Teacher
+View a Read-Only list of enrolled students in their courses, monitor enrollment statistics, and track student progress. Cannot modify or delete enrollments.
+Admin
+Manage enrollment issues, process manual refunds/cancellations, approve/reject pending refund requests, override enrollment restrictions for support purposes, and view platform-wide enrollment reports.
+System
+Automatically enforce enrollment business rules, prevent duplicate enrollments, handle teacher suspension impacts, auto-update enrollment status based on progress, and validate refund eligibility.
+4. Business Rules
+Rule ID
+Business Rule
+BR-E01
+A student can only enroll in a paid course after receiving successful payment confirmation. Free courses allow direct enrollment.
+BR-E02
+A student cannot enroll in the same course more than once (Strict duplicate prevention across Active, Completed, and Pending Refund statuses).
+BR-E03
+Only courses with a Published status can accept new enrollments.
+BR-E04
+Only students with an Active account status are allowed to enroll in courses.
+BR-E05
+Students can request a cancellation and full refund only if: (a) The request is within 7 days of enrollment, AND (b) The student has accessed less than 20% of the course content, AND (c) The student's Is Refund Eligible flag is true (see Enrollment data object — set to false on re-enrollment after a prior refund per BR-E14). Upon request, status changes to Pending Refund and access is temporarily suspended pending Admin review.
+BR-E06
+After the 7-day refund period, enrollments cannot be cancelled or refunded, but students retain access to the course content for as long as the course remains available on the platform.
+BR-E07
+If a teacher's account is suspended, no new enrollments are allowed in their courses. However, existing enrolled students retain full access until they complete the course. If the teacher's account is reactivated, their Published courses resume accepting new enrollments automatically.
+BR-E08
+Only Admins can archive a course. Teachers may submit an archival request, which requires Admin approval. If a course is archived, no new enrollments are allowed, but existing enrolled students retain access.
+BR-E09
+For free courses, the enrollment record is created with a null Payment Reference.
+BR-E10
+Teachers have strictly Read-Only access to their course enrollments and cannot modify or delete student records.
+BR-E11
+The system shall automatically mark an enrollment as Completed when the student reaches 100% content progress AND passes the final assessment (if the course includes one). For courses without a final assessment, 100% progress alone triggers completion. The passing score threshold is defined per course by the Teacher at the time of course creation (platform default: 60%).
+BR-E12
+Cancellation (revoking content access) and Refund (returning money) are decoupled actions. An Admin may cancel an enrollment due to policy violation without issuing a refund (status = Cancelled). An Admin may also manually issue a refund (status = Refunded), which revokes access and triggers a refund to the Payment Module.
+BR-E13
+All manual enrollment modifications by an Admin must include a mandatory reason and be logged in the audit trail.
+BR-E14
+A student who was Cancelled by an Admin for policy violation may not re-enroll in the same course. A student who was Refunded may re-enroll but will not be eligible for a second refund on the same course (Is Refund Eligible = false).
+BR-E15
+An Admin may manually approve or reject a Pending Refund request. Upon approval: status changes to Refunded, refund is processed, access revoked. Upon rejection: status reverts to Active, access restored, student notified with reason.
+5. Functional Requirements
+ID
+Requirement
+FR-E01
+The system shall allow students to enroll in free courses with a single click, creating an Active enrollment immediately.
+FR-E02
+The system shall create an enrollment record for paid courses only after receiving a successful payment confirmation event from the Payment Module.
+FR-E03
+The system shall validate and prevent duplicate enrollments by checking if the Student ID is already linked to the target Course ID with an Active, Completed, or Pending Refund status. The system shall also check historical enrollment records to enforce BR-E14 (preventing re-enrollment after Admin cancellation for policy violations).
+FR-E04
+The system shall validate that the course status is Published and the student account is Active before processing any enrollment.
+FR-E05
+The system shall allow students to request enrollment cancellation, triggering automatic validation of: (a) the 7-day rule, (b) the <20% content rule, AND (c) that the student's Is Refund Eligible flag is true (BR-E05). If all valid: status changes to Pending Refund, access is suspended, Admin and student are notified. If any condition fails: specific error message displayed.
+FR-E06
+The system shall accurately track and update the Content Accessed Percentage for each student. Definition: Content Accessed % = (Number of distinct content items fully consumed / Total content items in course) × 100. Fully consumed means: video watched ≥90%, quiz passed, or article/document scrolled to ≥80% of its length, or time-on-page ≥ estimated reading time × 70%.
+FR-E07
+The system shall provide students with a dashboard displaying all enrolled courses, enrollment dates, progress percentage, and current status.
+FR-E08
+The system shall provide teachers with a Read-Only dashboard view of all students enrolled in their courses, including enrollment date and progress %.
+FR-E09
+The system shall automatically block new enrollment attempts if the associated teacher's status is Suspended or the course status is Archived, while preserving existing records.
+FR-E10
+The system shall automatically update the enrollment status to Completed when the student reaches 100% progress and passes the final assessment (if exists).
+FR-E11
+The system shall log all enrollment status changes in an immutable audit trail (who, what, when, and why).
+FR-E12
+The system shall allow Admins to manually cancel an enrollment without triggering a refund (for policy violations), enforcing a mandatory Reason field. This sets status to Cancelled and permanently blocks re-enrollment per BR-E14.
+FR-E13
+The system shall allow Admins to manually approve or reject Pending Refund requests. Approval sets status to Refunded and triggers refund to the Payment Module. Rejection reverts status to Active and restores content access.
+FR-E14
+The system shall send automated notifications to students upon: (1) successful enrollment, (2) refund request submission (status = Pending Refund), (3) enrollment cancellation (Cancelled or Refunded), (4) course completion, (5) refund request resolution (approval or rejection). Students in Pending Refund status who attempt to access content shall receive a message: Your refund request is under review. Content access is temporarily suspended.
+FR-E15
+The system shall deny access to course content for any student whose enrollment status is not Active or Completed. This Gatekeeper function shall be enforced on every content access attempt, returning an appropriate status-specific message to the student.
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-E01
+As a student, I want to enroll in a paid course after payment so that I can access its content.
+Payment successful → Enrollment status = Active → Content immediately accessible → Appears in student dashboard.
+US-E02
+As a student, I want to enroll in a free course directly so that I can start learning without payment.
+Student clicks Enroll → Enrollment status = Active, Payment ID = null → Content immediately accessible.
+US-E03
+As a student, I want to view all my enrolled courses so that I can track my learning journey.
+Dashboard displays: Course Name, Teacher Name, Enrollment Date, Progress %, and Status (Active / Completed / Cancelled / Refunded / Pending Refund).
+US-E04
+As a student, I want to cancel my enrollment within the allowed period to get a refund if the course doesn't meet my expectations.
+Student clicks Cancel → System checks: (a) 7 days or less, AND (b) Progress < 20%, AND (c) Is Refund Eligible = true. If all true: Status → Pending Refund, access suspended, Admin notified, student receives confirmation. If false: specific error message displayed.
+US-E05
+As a teacher, I want to see all students enrolled in my courses so that I can understand my audience.
+Teacher views course dashboard → Sees student Name, Enrollment Date, Progress % → Cannot edit or delete any record.
+US-E06
+As a student, I want to be prevented from enrolling twice in the same course so that I don't accidentally pay twice.
+Student tries to re-enroll → System blocks with message: You are already enrolled in this course, with a link to existing enrollment.
+US-E07
+As the system, I want to preserve existing enrollments when a teacher is suspended so that students' learning is not disrupted.
+Teacher status = Suspended → New enrollments blocked → Existing enrollments remain Active → Students retain full content access.
+US-E08
+As the system, I want to mark enrollments as Completed when students finish the course so that we can track completion rates.
+Progress = 100% AND (Final Assessment Passed OR no final assessment) → Status = Completed → Completion notification sent.
+US-E09
+As an admin, I want to manually cancel a student's enrollment without a refund for policy violations.
+Admin cancels → Status = Cancelled (NOT Refunded) → Mandatory reason entered → Logged in audit trail → Student loses access immediately → Student permanently blocked from re-enrolling in same course.
+US-E10
+As an admin, I want to review pending refund requests so that I can prevent abuse of the refund policy.
+Admin views Pending Refund dashboard → Reviews progress and enrollment date → Approves (Status = Refunded, refund triggered, access revoked) OR Rejects (Status = Active, access restored) → Mandatory reason entered → Student notified.
+7. Data Objects
+Course (Reference Table)
+Field
+Course ID
+Title
+Status
+Teacher ID (FK)
+Has Final Assessment
+Total Content Items
+Passing Score %
+Enrollment
+Field
+Enrollment ID
+Student ID (FK)
+Course ID (FK)
+Enrollment Date
+Status
+Payment ID (FK)
+Course Price At Enrollment
+Content Accessed %
+Is Refund Eligible
+Completion Date
+Cancellation Date
+Status Changed At
+Created At
+Updated At
+📌 Note: Teacher ID is NOT stored in Enrollment. Teacher information is retrieved via JOIN on Course → Teacher to avoid data duplication and inconsistency.
+Enrollment Audit Log
+Field
+Log ID
+Enrollment ID (FK)
+Action Taken
+Performed By (FK)
+Action Timestamp
+Notes / Reason
+Previous Status
+New Status

@@ -21,9 +21,9 @@ E-Learning Platform
 
 ### Short Description
 
-An Arabic-first web platform for Egyptian secondary school students to buy teacher courses using prepaid codes, watch recorded lessons, solve MCQ quizzes, and track progress.
+An Arabic-first web platform for Egyptian secondary school students to buy teacher courses using prepaid codes, watch recorded lessons, solve assessments/quizzes, and track progress.
 
-The platform also supports parents, teachers, education centers, and admins.
+The platform also supports parents, teachers, and admins.
 
 ## 3. Human Actors
 
@@ -58,21 +58,12 @@ Main goals:
 - Submit courses for admin approval
 - View enrolled students and course progress reports
 
-### Education Center
-
-Main goals:
-
-- Manage center profile
-- Create teacher accounts
-- Manage linked teachers
-- View reports for center teachers and courses
-
 ### Admin
 
 Main goals:
 
 - Manage users
-- Approve teachers and education centers
+- Approve teachers
 - Approve or reject courses
 - Manage curriculum data
 - Generate and manage prepaid codes
@@ -94,15 +85,15 @@ Important note:
 
 The application should store video metadata, but the actual video delivery should not go through the application backend.
 
-### Email/SMS Notification Service
+### Future Email/SMS Notification Service
 
 Purpose:
 
-- Send account, approval, code, or important status notifications.
+- Send account, approval, code, or important status notifications in a later phase.
 
 MVP status:
 
-Not clearly required in the current MVP documentation, but likely needed soon.
+Future scope. Notifications are not required in the current MVP.
 
 ### Future Payment Gateway
 
@@ -120,7 +111,7 @@ Out of scope. The MVP uses prepaid codes only.
 
 - User accounts and roles
 - Parent-student linking
-- Teacher and education center approval
+- Teacher approval
 - Curriculum structure
 - Course catalog
 - Course and lesson management
@@ -135,7 +126,7 @@ Out of scope. The MVP uses prepaid codes only.
 ### Outside the E-Learning Platform
 
 - Actual video file storage and streaming
-- Email/SMS delivery
+- Future Email/SMS delivery
 - Future external payment processing
 
 ## 6. C4 System Context Diagram
@@ -145,23 +136,21 @@ flowchart LR
     Student["Student"]
     Parent["Parent"]
     Teacher["Teacher"]
-    Center["Education Center"]
     Admin["Admin"]
 
     System["E-Learning Platform\nArabic-first web platform for courses, prepaid codes, video lessons, quizzes, progress, and reports"]
 
     Video["Video Streaming Service\nStores/streams recorded lessons"]
-    Notify["Email/SMS Notification Service\nSends account and status notifications"]
+    Notify["Future Email/SMS Notification Service\nOut of scope for MVP"]
     Payment["Future Payment Gateway\nOut of scope for MVP"]
 
     Student -->|"Browses courses, redeems codes, enrolls, watches lessons, solves quizzes, tracks progress"| System
     Parent -->|"Links students, redeems codes, views progress"| System
     Teacher -->|"Creates courses, adds lessons/quizzes, views own reports"| System
-    Center -->|"Manages teachers, views center reports"| System
     Admin -->|"Approves users/courses, manages codes/balances, views reports"| System
 
     System -->|"Requests private playback access and stores video metadata"| Video
-    System -->|"Sends notifications"| Notify
+    System -. "Future notifications" .-> Notify
     System -. "Future direct payments" .-> Payment
 ```
 
@@ -217,12 +206,12 @@ Many actors interact with the same system but with different permissions.
 
 Reason:
 
-Students, parents, teachers, centers, and admins all see different parts of the system.
+Students, parents, teachers, and admins all see different parts of the system.
 
 Architecture impact:
 
 - The backend must enforce authorization, not only the frontend.
-- Access checks must include role, ownership, enrollment, parent-student link, teacher ownership, and center relationship.
+- Access checks must include role, ownership, enrollment, parent-student link, and teacher ownership.
 
 ## 9. Main Context Risks
 
@@ -231,7 +220,6 @@ Architecture impact:
 | Student accesses unpaid course content. | Causes revenue leakage and trust issues. | Backend checks enrollment before lesson, quiz, and video access. |
 | Parent sees unlinked student data. | Privacy issue. | Parent-student link required for progress access. |
 | Teacher sees another teacher's reports. | Privacy and business issue. | Report queries scoped by teacher ownership. |
-| Center sees unrelated teacher data. | Privacy and business issue. | Report queries scoped by center-teacher relationship. |
 | Public video links are shared. | Paid content can leak. | Use private video access with expiring URLs or provider tokens. |
 | Future payment integration changes core design. | MVP may become hard to extend. | Keep prepaid code/balance as a payment method concept, not a one-off hack. |
 
@@ -243,7 +231,7 @@ The goal is to make the system boundary clear:
 
 - People use the E-Learning Platform.
 - The E-Learning Platform owns business rules.
-- External providers handle specialized technical capabilities such as video delivery and notifications.
+- External providers handle specialized technical capabilities such as video delivery. Notifications are future scope.
 
 This diagram is intentionally simple. A good context diagram should be understandable by business stakeholders, not only engineers.
 
@@ -254,4 +242,3 @@ The E-Learning Platform is the central system that owns learning, enrollment, pr
 The most important external dependency is the Video Streaming Service.
 
 The next step is the Container Diagram, where we break the platform into major deployable or runtime parts such as web frontend, backend API, database, cache, and external services.
-

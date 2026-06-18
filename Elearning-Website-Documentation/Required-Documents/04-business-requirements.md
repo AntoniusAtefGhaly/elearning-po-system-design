@@ -54,7 +54,7 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | R-15 | Prepaid codes are distributed manually in the MVP. |
 | R-16 | For refunds, admin resets student balance to 0 and the money is returned manually outside the system. |
 | R-17 | Lesson completion can be manual or automatic. |
-| R-18 | MVP quizzes use MCQ questions only. |
+| R-18 | Assessment and grading scope follows the Assessment Management and Grading Management module documents. |
 | R-19 | Student balance can be used partially across multiple courses. |
 | R-20 | Student balance cannot become negative. |
 | R-21 | Admin can manually add or subtract student balance. |
@@ -70,9 +70,10 @@ The platform supports Secondary 1, Secondary 2, and Secondary 3.
 | R-31 | Admin can edit teacher course prices. |
 | R-32 | Automatic lesson completion happens after watching 90% of the video. |
 | R-33 | Quiz score is shown to student. |
-| R-34 | Quiz retry is not allowed in MVP. |
+| R-34 | Quiz retry is allowed in MVP. |
 | R-35 | Quiz result affects course progress. |
 | R-36 | MVP reports include codes, enrollments, teacher sales, and student progress. |
+| R-37 | MVP payment uses prepaid codes and student balance only; payment gateway is future scope. |
 
 ## 5. Out of Scope
 
@@ -86,6 +87,11 @@ The MVP does not include:
 - English interface
 - Subject bundles
 - Direct online payment gateway
+- Subscriptions and invoices
+- Free course enrollment
+- Course archive/delete/restore lifecycle
+- Notifications
+- Attendance tracking
 - Advanced video protection such as watermarking
 - Parent-student link approval workflow
 

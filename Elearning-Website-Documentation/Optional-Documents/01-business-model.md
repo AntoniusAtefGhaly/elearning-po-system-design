@@ -73,7 +73,7 @@ Teachers can publish courses based on the official Egyptian curriculum.
 - Prepaid code redemption
 - Course enrollment
 - Recorded video lessons
-- Basic MCQ quizzes
+- Basic assessments/quizzes
 - Progress tracking
 - Parent progress view
 - Teacher course management
@@ -87,6 +87,11 @@ Teachers can publish courses based on the official Egyptian curriculum.
 - Certificates
 - Subject bundles
 - Direct online payment gateway
+- Subscriptions and invoices
+- Free course enrollment
+- Course archive/delete/restore lifecycle
+- Notifications
+- Attendance tracking
 - English interface
 - Advanced video protection such as watermarking
 

@@ -1,0 +1,120 @@
+﻿Module 02: Teacher Management
+Business Analysis Document
+1. Module Purpose
+Teacher Management handles the full lifecycle of a teacher account on the e-learning platform — from initial onboarding and document verification, through admin approval, to ongoing profile and status management.
+2. Scope
+In Scope
+Teacher onboarding: collecting profile data and verification documents
+Profile management: allowing teachers to update personal and professional info
+Verification & Approval: admin review and approval of teacher accounts
+Subject linking: connecting approved teachers to predefined teaching subjects
+Status management: Admin control over teacher account status (Active, Suspended)
+3. Actors
+Actor
+Need
+Teacher
+Create/update profile, upload verification documents, select teaching subjects, and get approved to start creating courses.
+Admin
+Review teacher applications, verify documents, approve/reject teachers, and manage teacher statuses (suspend/activate).
+4. Business Rules
+Rule ID
+Business Rule
+BR-T01
+Teachers must upload required verification documents (e.g., National ID, University Degree, Teaching Certificates) during onboarding.
+BR-T02
+A teacher's account remains in "Pending" status and cannot create or publish any courses until approved by an Admin.
+BR-T03
+Teachers must select their teaching subjects from a predefined system list during onboarding. Actual course assignment is managed by the platform.
+BR-T04
+If a teacher's profile is rejected, the system must capture the rejection reason and notify the teacher so they can resubmit.
+BR-T05
+Only teachers with an Active status can be assigned as instructors to new courses.
+BR-T06
+If an Admin suspends a teacher, no new enrollments are allowed in their courses. Students already enrolled retain access until the course ends.
+BR-T07
+A teacher cannot create multiple accounts using the same National ID or Phone Number.
+BR-T08
+Teachers can only create courses for subjects where their linkage status is explicitly "Verified".
+5. Functional Requirements
+ID
+Requirement
+FR-T01
+The system shall allow teachers to complete their onboarding by filling out profile details (Bio, Experience) and uploading verification documents, including subject selection.
+FR-T02
+The system shall allow teachers to update their profile information (Bio, profile image, contact info) at any time. Changes to teaching subjects require re-verification.
+FR-T03
+The system shall allow teachers to submit or resubmit their profile for admin verification.
+FR-T04
+The system shall provide a dashboard for Admins to view a list of pending teacher applications and their uploaded documents.
+FR-T05
+The system shall allow Admins to approve or reject teacher applications, requiring a mandatory reason for rejection.
+FR-T06
+The system shall allow Admins to change a teacher's status (Active, Suspended) and log this action in the audit trail.
+FR-T07
+The system shall automatically send notifications (Email/In-app) to teachers informing them of their approval status or required corrections.
+FR-T08
+The system shall provide Admins with a viewable audit log of all status changes and approval actions per teacher.
+FR-T09
+The system shall validate that National ID and Phone Number are unique during registration to prevent duplicate accounts.
+FR-T10
+The system shall restrict course creation to only those subjects where the teacher's linkage status is "Verified".
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-T01
+As a teacher, I want to complete my profile and upload documents so that I can get verified.
+Teacher fills in Bio, selects subjects from predefined list, uploads ID and certificates; system saves data and sets status to "Pending Approval".
+US-T02
+As a teacher, I want to edit my profile so that my information is always up to date.
+Teacher updates Bio or Profile Image; changes are saved immediately. Changing teaching subjects resets status to "Pending Approval" and triggers re-verification.
+US-T03
+As an admin, I want to review pending teacher applications so that I can verify their credentials.
+Admin views list of pending teachers, clicks on a profile, views uploaded documents, and clicks "Approve" or "Reject".
+US-T04
+As an admin, I want to reject a teacher with a reason so that they know what to fix.
+Admin selects "Reject", enters a mandatory reason (e.g., "Blurry ID image"), and the teacher receives a notification with the reason.
+US-T05
+As an admin, I want to suspend a teacher's account so that they can no longer teach if they violate policies.
+Admin changes teacher status to "Suspended"; teacher loses dashboard access; their courses are closed to new enrollments but existing enrolled students retain access.
+US-T06
+As a teacher, I want to register with my unique National ID so that I don't accidentally create duplicate accounts.
+System validates that National ID and Phone Number are unique during registration. If duplicate detected, system rejects registration with error message.
+US-T07
+As a teacher, I want to create courses only for subjects I'm verified in so that I teach within my expertise.
+System shows only verified subjects in course creation dropdown. If teacher tries to create course for unverified subject, system blocks action with error message.
+7. Data Objects
+Teacher Profile
+Field
+User ID (FK)
+Full Name
+National ID
+Bio
+Profile Image URL
+Years of Experience
+Approval Status
+Account Status
+Created At
+Updated At
+Teacher Documents
+Field
+Document ID
+Teacher ID (FK)
+Document Type
+File URL
+Uploaded At
+Teacher Subject Linkage
+Field
+Linkage ID
+Teacher ID (FK)
+Subject ID (FK)
+Linked At
+Status
+Teacher Audit Log
+Field
+Log ID
+Teacher ID (FK)
+Action Taken
+Admin ID (FK)
+Action Timestamp
+Notes / Reason

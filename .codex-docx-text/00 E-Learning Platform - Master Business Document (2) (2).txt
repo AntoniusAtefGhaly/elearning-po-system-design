@@ -1,0 +1,139 @@
+﻿E-Learning Platform - Master Business Document
+1. Business Overview
+The E-Learning & Private Tutoring Platform is designed to enable teachers to create structured digital learning content (courses) and deliver it to students in an organized and interactive way, including lessons, assessments, payments, and progress tracking.
+The system supports:
+Educational content management
+Teacher and student management
+Structured learning delivery
+Monetization via payments or subscriptions
+Scalable educational infrastructure
+2. Business Goals
+Empower teachers to create and sell educational content
+Enable students to access structured learning materials
+Build a scalable education platform
+Support assessments and exams
+Enable payments and subscriptions
+3. Target Users (Actors)
+Student
+Teacher
+Parent
+System Administrator
+4. Business Domains (Core Modules)
+The system is divided into independent business domains:
+4.1 Identity & Access Management
+Description
+Handles authentication, user accounts, roles, and authorization.
+Responsibilities
+User registration
+Login/logout
+Role management (Student / Teacher / Admin / Parent)
+Access control (RBAC)
+4.2 Teacher Management
+Description
+Manages teacher profiles and their lifecycle within the platform.
+Responsibilities
+Teacher onboarding
+Profile management
+Verification
+Linking teachers to courses
+4.3 Student Management
+Description
+Manages student accounts and learning activity.
+Responsibilities
+Student registration
+Profile management
+Activity tracking
+Course associations
+4.4 Content & Course Management
+Description
+Responsible for creating, managing, structuring, and publishing educational courses and their learning materials.
+This module covers the full course lifecycle, starting from course creation and categorization, then defining the internal curriculum structure, and finally managing the educational content such as videos, documents, and other learning resources.
+Responsibilities
+Create and edit courses
+  Publish and archive courses
+  Categorize courses
+  Create subjects, modules, and lessons
+  Upload videos and documents
+  Organize course materials
+Key Entities
+Course
+Category
+Tag
+Subject
+Module
+Lesson
+Video
+Document
+Media File
+4.5 Enrollment Management
+Description
+Handles student enrollment in courses.
+Responsibilities
+Enroll students in courses
+Cancel enrollment
+Track enrollment status
+Key Entities
+Enrollment
+4.6 Assessment Management
+Description
+Manages exams, quizzes, and evaluations.
+Responsibilities
+Create exams
+Create questions
+Publish assessments
+Define grading rules
+Key Entities
+Exam
+Question
+Answer
+4.7 Grading Management
+Description
+Handles evaluation and grading of student submissions.
+Responsibilities
+Grade exams
+Calculate scores
+Generate results
+Key Entities
+Grade
+Result
+4.8 Payment & Subscription Management
+Description
+Handles payments, prepaid codes, and subscriptions.
+Responsibilities
+Generate prepaid codes
+Delete prepaid codes
+Manage subscriptions(add/remove balance from student)
+Generate invoices
+Key Entities
+Prepaid code
+Payment
+Invoice
+Subscription
+4.9 Notification Management
+Description
+Handles all system notifications.
+Responsibilities
+Email notifications
+In-app notifications
+Alerts and reminders
+4.10 Parent Portal
+Description
+Provides parents with visibility into student progress.
+Responsibilities
+Track student performance
+View results
+Monitor activity
+4.11 Reporting & Analytics
+Description
+Provides business intelligence and system analytics.
+Responsibilities
+Student performance reports
+Teacher performance reports
+Platform KPIs
+4.12 Administration
+Description
+System-wide administration and configuration.
+Responsibilities
+User management
+System monitoring
+Platform configuration

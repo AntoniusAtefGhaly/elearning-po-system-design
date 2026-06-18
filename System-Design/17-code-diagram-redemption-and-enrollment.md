@@ -305,7 +305,7 @@ PrepaidCodes.RedeemedByStudentId is nullable until used.
 PrepaidCodeRedemptions.PrepaidCodeId is unique.
 Enrollments has unique StudentId + CourseId.
 StudentBalances.CurrentAmount cannot be below zero.
-QuizAttempts later should have unique StudentId + QuizId for MVP no-retry rule.
+QuizAttempts should allow multiple attempts because quiz retry is allowed in MVP.
 ```
 
 Recommended transactional behavior:
@@ -413,4 +413,3 @@ This completes the core C4 set for the MVP:
 4. Code Diagram for the riskiest flow
 
 The next architecture step should be domain modeling and database design.
-

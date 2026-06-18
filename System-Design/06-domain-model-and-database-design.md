@@ -16,19 +16,20 @@ This is still architecture-level design, not final migration scripts.
 
 ## 2. Recommended Domain Areas
 
-For the MVP, divide the domain into these areas:
+For the MVP, divide the domain into these system modules:
 
-1. Identity and Access
-2. Users and Profiles
-3. Curriculum
-4. Teachers and Education Centers
-5. Courses and Lessons
-6. Prepaid Codes and Balance
-7. Enrollment
-8. Quizzes
-9. Learning Progress
-10. Reports
-11. Audit Logs
+1. Identity & Access Management
+2. Teacher Management
+3. Student Management
+4. Content & Course Management
+5. Enrollment Management
+6. Assessment Management
+7. Grading Management
+8. Payment & Subscription Management
+9. Notification Management
+10. Parent Portal
+11. Reporting & Analytics
+12. Administration
 
 In a modular monolith, these areas can live in the same backend application and same database, but they should have clear ownership.
 
@@ -39,12 +40,10 @@ erDiagram
     USER ||--o| STUDENT : "has profile"
     USER ||--o| PARENT : "has profile"
     USER ||--o| TEACHER : "has profile"
-    USER ||--o| EDUCATION_CENTER : "has profile"
 
     PARENT ||--o{ PARENT_STUDENT_LINK : "links"
     STUDENT ||--o{ PARENT_STUDENT_LINK : "linked by"
 
-    EDUCATION_CENTER ||--o{ TEACHER : "may own"
     TEACHER ||--o{ COURSE : "creates"
 
     SECONDARY_YEAR ||--o{ COURSE : "classifies"
@@ -96,7 +95,7 @@ Important fields:
 
 Notes:
 
-- `Role` can be `Student`, `Parent`, `Teacher`, `EducationCenter`, or `Admin`.
+- `Role` can be `Student`, `Parent`, `Teacher`, or `Admin`.
 - If the product later needs users with multiple roles, replace single `Role` with `UserRoles`.
 
 ### Student
@@ -158,7 +157,6 @@ Important fields:
 
 - Id
 - UserId
-- EducationCenterId nullable
 - SubjectId
 - Bio
 - ProfileImageUrl
@@ -169,27 +167,9 @@ Important fields:
 
 Rules:
 
-- Teacher can be independent or linked to one education center only.
+- Teachers are individual users in MVP.
 - Teacher approval requires name, phone, subject, bio, profile image, and documents.
 - Teacher creates many courses.
-
-### EducationCenter
-
-Represents an education center profile.
-
-Important fields:
-
-- Id
-- UserId
-- Name
-- ApprovalStatus
-- CreatedAt
-
-Rules:
-
-- Education center can create teacher accounts.
-- Admin can link existing teachers to a center.
-- Center can view reports for linked teachers and courses.
 
 ### Curriculum Entities
 
@@ -376,7 +356,7 @@ Rules:
 
 ### Quiz
 
-Represents an MCQ quiz.
+Represents an assessment/quiz.
 
 Important fields:
 
@@ -388,7 +368,7 @@ Important fields:
 
 Rules:
 
-- MVP quizzes use MCQ only.
+- Assessment question types follow the Assessment Management module scope.
 - Quiz can be linked to course or lesson.
 
 ### QuizQuestion
@@ -428,8 +408,8 @@ Important fields:
 
 Rules:
 
-- Student cannot retry quiz in MVP.
-- Add unique constraint on `QuizId + StudentId`.
+- Student can retry quiz in MVP.
+- Store each retry as a separate attempt with attempt number and timestamp.
 - Quiz result affects course progress.
 
 ### LessonProgress
@@ -484,7 +464,6 @@ Students
 Parents
 ParentStudentLinks
 Teachers
-EducationCenters
 SecondaryYears
 Subjects
 Terms
@@ -515,7 +494,6 @@ Users.Phone unique, if phone is used for login.
 Students.UserId unique.
 Parents.UserId unique.
 Teachers.UserId unique.
-EducationCenters.UserId unique.
 ParentStudentLinks unique ParentId + StudentId.
 PrepaidCodes.Code unique.
 PrepaidCodes.SerialNumber unique.
@@ -523,7 +501,7 @@ CodeRedemptions.PrepaidCodeId unique.
 StudentBalances.StudentId unique.
 StudentBalances.CurrentAmount >= 0.
 Enrollments unique StudentId + CourseId.
-QuizAttempts unique StudentId + QuizId.
+QuizAttempts allow multiple rows per StudentId + QuizId.
 LessonProgress unique StudentId + LessonId.
 Courses.Price >= 0.
 PrepaidCodes.Value > 0.
@@ -654,7 +632,7 @@ Owns:
 
 Protects:
 
-- Student cannot retry in MVP.
+- Student can retry in MVP.
 
 ## 9. Design Decisions
 
@@ -692,7 +670,6 @@ Examples:
 
 - `ParentStudentLinks`
 - `Enrollments`
-- `Teachers.EducationCenterId`
 
 Reason:
 
@@ -702,12 +679,12 @@ Reason:
 
 | Mistake | Problem |
 | --- | --- |
-| Put student, parent, teacher, center fields all in `Users`. | User table becomes messy and role-specific fields become nullable everywhere. |
+| Put student, parent, and teacher fields all in `Users`. | User table becomes messy and role-specific fields become nullable everywhere. |
 | Store only current student balance. | No way to audit or explain changes. |
 | Store video public URL directly on lesson. | Paid content links can leak easily. |
-| Let reports query without ownership filters. | Data leakage between teachers or centers. |
+| Let reports query without ownership filters. | Data leakage between teachers. |
 | Make prepaid code redemption async. | Balance correctness becomes harder. |
-| Depend only on frontend for no quiz retry. | Student can call the API again. |
+| Overwrite previous quiz attempts. | Retry history and grading audit are lost. |
 
 ## 11. Step 06 Conclusion
 
@@ -722,4 +699,3 @@ The most important modeling decisions are:
 5. Model relationships explicitly because authorization depends on them.
 
 The next step is API design.
-

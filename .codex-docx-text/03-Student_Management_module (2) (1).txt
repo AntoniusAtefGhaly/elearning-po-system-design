@@ -1,0 +1,108 @@
+﻿E-Learning Platform - Module Business Document Example
+Module 03: Student Management
+Business Analysis Document - Example
+1. Module Purpose
+Student Management handles student academic data, enrollment, progress tracking, learning activities, attendance, results, and parent monitoring within the e-learning platform.
+2. Scope
+Student profile management
+Student enrollment in courses
+Viewing enrolled courses
+Progress tracking
+Attendance tracking
+Assignment and quiz participation
+Student activity tracking
+Student notifications
+Parent monitoring access
+3. Actors
+Actor
+Need
+Student
+Enroll in courses, access learning content, track progress
+Parent
+Monitor student progress and attendance
+Teacher
+View students, monitor performance, manage attendance
+Admin
+Manage student accounts and academic records
+4. Business Rules
+Rule ID
+Business Rule
+BR-01
+A student can enroll only in active courses.
+BR-02
+Students must complete required lessons before taking final quizzes.
+BR-03
+Parents can only view linked student data.
+BR-04
+Teachers can manage attendance only for their own courses.
+BR-05
+Student progress shall update automatically after lesson completion.
+BR-06
+Students cannot access locked or unpublished content.
+BR-07
+Attendance records should be stored for reporting purposes.
+BR-08
+Attendance can only be recorded for scheduled course sessions.
+BR-09
+Parents cannot modify student academic data.
+5. Functional Requirements
+ID
+Requirement
+FR-01
+The system shall allow students to update their profile information.
+FR-02
+The system shall allow students to enroll in available courses.
+FR-03
+The system shall display enrolled courses for students.
+FR-04
+The system shall track lesson completion progress.
+FR-05
+The system shall allow students to attend quizzes and assignments.
+FR-06
+The system shall allow teachers to record attendance.
+FR-07
+The system shall allow parents to monitor student progress.
+FR-08
+The system shall send notifications about course updates and schedules.
+FR-09
+The system shall generate progress reports for students.
+FR-10
+The system shall display student dashboard statistics.
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-01
+As a student, I want to enroll in courses so that I can start learning.
+Enrollment succeeds and course appears in dashboard.
+US-02
+As a student, I want to track my progress so that I know my completion status.
+Progress percentage updates automatically.
+US-03
+As a parent, I want to monitor my child’s progress so that I can support learning.
+Parent can access linked student reports and attendance.
+US-04
+As a teacher, I want to record attendance so that student participation is tracked.
+Teacher can mark attendance for course sessions.
+US-05
+As an admin, I want to manage student records so that data remains accurate.
+Admin can update or deactivate student accounts.
+7. Data Objects
+Object
+Important Fields
+Student Profile
+StudentId, UserId, GradeLevel, EnrollmentStatus
+Enrollment
+EnrollmentId, StudentId, CourseId, EnrollmentDate, Status
+Progress
+ProgressId, StudentId, LessonId, CompletionPercentage
+Attendance
+AttendanceId, StudentId, CourseId, SessionDate, AttendanceStatus
+Student Activity
+ActivityId, StudentId, ActivityType, ActivityDate
+Result
+ResultId, StudentId, ExamId, Score, Grade
+Notification
+NotificationId, StudentId, Title, Message, SentDate
+Report
+ReportId, StudentId, ProgressRate, QuizResults, AttendanceRate

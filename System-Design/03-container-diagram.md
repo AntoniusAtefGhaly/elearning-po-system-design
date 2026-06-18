@@ -26,7 +26,6 @@ Main users:
 - Student
 - Parent
 - Teacher
-- Education Center
 - Admin
 
 Responsibilities:
@@ -40,7 +39,7 @@ Responsibilities:
 - Quiz screens
 - Parent progress view
 - Admin dashboard
-- Teacher and center dashboards
+- Teacher dashboard
 
 Important note:
 
@@ -56,7 +55,7 @@ Responsibilities:
 
 - Authentication and session/token handling
 - Role and permission checks
-- User, teacher, parent, center, and admin operations
+- User, teacher, parent, and admin operations
 - Course catalog and course management
 - Enrollment and paid access control
 - Prepaid code redemption
@@ -81,7 +80,6 @@ Responsibilities:
 
 - Store users and roles
 - Store parent-student links
-- Store teacher-center relationships
 - Store curriculum structure
 - Store courses, lessons, and quizzes
 - Store enrollments
@@ -120,7 +118,7 @@ Separate server-side process or hosted worker.
 
 Responsibilities:
 
-- Send notifications
+- Future: send notifications
 - Generate heavy reports if needed
 - Process non-critical async tasks
 - Clean up temporary records if needed
@@ -145,7 +143,7 @@ Important boundary:
 
 The platform backend decides whether a student can access a video. The video provider delivers the video.
 
-### Email/SMS Notification Service
+### Future Email/SMS Notification Service
 
 Type:
 
@@ -153,11 +151,11 @@ External provider.
 
 Responsibilities:
 
-- Send account, approval, or status notifications
+- Send account, approval, or status notifications in a later phase
 
 MVP note:
 
-This is likely useful, but the current MVP documentation does not make it a core requirement.
+Future scope. Notifications are not required in the current MVP.
 
 ## 3. C4 Container Diagram
 
@@ -166,22 +164,20 @@ flowchart LR
     Student["Student"]
     Parent["Parent"]
     Teacher["Teacher"]
-    Center["Education Center"]
     Admin["Admin"]
 
     Web["Web Frontend\nArabic RTL web app\nMobile and desktop"]
     API["Backend API\nModular monolith\nBusiness rules and authorization"]
     DB[("Relational Database\nTransactional source of truth")]
     Cache[("Cache\nOptional read/session cache")]
-    Worker["Background Worker\nAsync jobs and notifications"]
+    Worker["Background Worker\nAsync jobs and future notifications"]
 
     Video["Video Streaming Service\nPrivate video playback"]
-    Notify["Email/SMS Provider\nNotifications"]
+    Notify["Future Email/SMS Provider\nOut of scope for MVP"]
 
     Student -->|"Uses browser"| Web
     Parent -->|"Uses browser"| Web
     Teacher -->|"Uses browser"| Web
-    Center -->|"Uses browser"| Web
     Admin -->|"Uses browser"| Web
 
     Web -->|"HTTPS JSON API"| API
@@ -189,7 +185,7 @@ flowchart LR
     API -->|"Read/write cached data"| Cache
     API -->|"Queue or internal job request"| Worker
     Worker -->|"Read/write job data"| DB
-    Worker -->|"Send messages"| Notify
+    Worker -. "Future messages" .-> Notify
 
     API -->|"Request signed playback access"| Video
     Web -->|"Play video using authorized URL/token"| Video
@@ -280,13 +276,13 @@ Backend should:
 
 | Container | Owns | Must Not Own |
 | --- | --- | --- |
-| Web Frontend | UI state, forms, navigation, user experience | Final authorization, payment/balance correctness, quiz retry enforcement |
+| Web Frontend | UI state, forms, navigation, user experience | Final authorization, payment/balance correctness, quiz attempt correctness |
 | Backend API | Business rules, authorization, transactions, API contracts | Large video file streaming |
 | Relational Database | Durable source of truth and transactional consistency | UI behavior |
 | Cache | Fast repeated reads | Source of truth for balance, enrollment, code redemption, or quiz attempts |
 | Background Worker | Async/non-critical jobs | Critical purchase/redemption correctness |
 | Video Service | Video storage and playback | Business decision of who can access a course |
-| Notification Provider | Message delivery | Business event ownership |
+| Future Notification Provider | Message delivery | Business event ownership |
 
 ## 6. Important Architecture Decisions
 
@@ -303,7 +299,6 @@ Every sensitive endpoint must check role and relationship:
 - Student enrollment for lesson/video/quiz access
 - Parent-student link for parent views
 - Teacher ownership for teacher reports
-- Center-teacher relationship for center reports
 - Admin role for approvals, codes, balances, and platform settings
 
 ### Decision 2 - Database is Source of Truth
@@ -316,7 +311,7 @@ Impact:
 
 - Cache can improve speed but cannot decide correctness.
 - Transactions protect money-like operations.
-- Unique constraints protect against duplicate redemption, duplicate enrollment, and duplicate quiz attempts.
+- Unique constraints protect against duplicate redemption and duplicate enrollment. Quiz retries should be stored as separate attempts.
 
 ### Decision 3 - Video Streaming is External
 
@@ -340,7 +335,7 @@ Impact:
 
 - Do not make prepaid code redemption eventually consistent.
 - Do not make course enrollment eventually consistent in MVP.
-- Use workers for notifications, reports, and non-critical tasks.
+- Future workers can handle notifications, reports, and non-critical tasks.
 
 ## 7. Suggested Technology-Agnostic Shape
 
@@ -353,7 +348,7 @@ One reasonable stack could be:
 - Database: PostgreSQL, SQL Server, or MySQL
 - Cache: Redis
 - Video: Vimeo, Cloudflare Stream, AWS CloudFront/S3 with signed URLs, or similar
-- Notifications: SMS/email provider
+- Future notifications: SMS/email provider
 
 Architecture first, technology second.
 
@@ -378,11 +373,10 @@ The system should start with these main containers:
 4. Optional Cache
 5. Optional Background Worker
 6. External Video Streaming Service
-7. External Notification Provider
+7. Future External Notification Provider
 
 The Backend API is the center of business rules and authorization.
 
 The Relational Database is the source of truth.
 
 The next C4 step is the Component Diagram, where we zoom into the Backend API and design its internal modules.
-

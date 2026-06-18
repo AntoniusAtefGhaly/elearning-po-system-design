@@ -43,7 +43,6 @@ Examples:
 - Can this student watch this lesson?
 - Can this parent view this student's progress?
 - Can this teacher edit this course?
-- Can this education center view this teacher's reports?
 - Can this admin adjust student balance?
 
 ## 3. User Roles
@@ -120,6 +119,79 @@ If frontend and backend are on separate domains, configure:
 - SameSite policy
 - CORS carefully
 
+### Cookie Authentication Cycle
+
+```text
+1. User opens the Angular login page.
+2. User submits email/phone and password.
+3. Angular sends credentials to POST /api/auth/login.
+4. ASP.NET Core validates the user and password.
+5. Backend checks user status, role, and approval state.
+6. Backend creates an encrypted authentication cookie.
+7. Backend returns Set-Cookie to the browser.
+8. Browser stores the cookie automatically.
+9. For later API requests, browser sends the cookie automatically.
+10. Backend validates the cookie on every protected request.
+11. Authorization policies check role, ownership, relationship, and resource state.
+12. On logout, backend expires the cookie.
+13. Browser removes the cookie.
+```
+
+### Cookie Authentication Sequence
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant Angular as Angular Frontend
+    participant Browser as Browser Cookie Store
+    participant API as ASP.NET Core API
+
+    User->>Angular: Submit login form
+    Angular->>API: POST /api/auth/login
+    API->>API: Validate credentials and user status
+    API-->>Browser: Set-Cookie: ELearning.Auth
+    Browser-->>Angular: Login success
+
+    Angular->>API: GET /api/me
+    Browser->>API: Automatically sends Cookie
+    API->>API: Validate auth cookie
+    API-->>Angular: Return current user
+
+    Angular->>API: POST /api/auth/logout
+    Browser->>API: Automatically sends Cookie
+    API-->>Browser: Expire auth cookie
+    Browser-->>Angular: Logged out
+```
+
+### Cookie Settings
+
+Recommended cookie settings:
+
+```text
+HttpOnly:
+JavaScript cannot read the cookie.
+
+Secure:
+Cookie is sent only over HTTPS.
+
+SameSite=Lax or Strict:
+Helps reduce CSRF risk.
+
+Expires/Max-Age:
+Controls cookie lifetime.
+```
+
+Example lifetime:
+
+```text
+Expire after 8 hours.
+Use sliding expiration if the user is active.
+```
+
+Important:
+
+Cookie auth needs CSRF protection for state-changing requests such as POST, PUT, PATCH, and DELETE.
+
 ## 5. User Status and Approval
 
 Users should have status fields because not every account can act immediately.
@@ -139,7 +211,6 @@ Examples:
 - Student: usually active after registration.
 - Parent: usually active after registration.
 - Teacher: pending approval until admin approves.
-- Education Center: pending approval if center approval is required.
 - Admin: created by platform owner/admin process.
 
 Important rule:
@@ -177,7 +248,6 @@ Examples:
 ```text
 Parent can view progress only for linked students.
 Teacher can edit only own courses.
-Education center can view only linked teacher data.
 Student can watch only enrolled courses.
 ```
 
@@ -219,28 +289,27 @@ CanSubmitQuizAttempt
 CanViewStudentProgress
 CanManageTeacherCourse
 CanViewTeacherReport
-CanViewCenterReport
 ```
 
 ## 8. Permission Matrix
 
-| Action | Student | Parent | Teacher | Education Center | Admin |
-| --- | --- | --- | --- | --- | --- |
-| Register/login | Yes | Yes | Yes, after account exists | Yes, after account exists | Yes |
-| Browse published courses | Yes | Yes | Yes | Yes | Yes |
-| Create course | No | No | Own courses | Through linked teachers if supported | Support/Admin |
-| Submit course for approval | No | No | Own courses | No direct unless acting through teacher | No |
-| Approve course | No | No | No | No | Yes |
-| Generate prepaid codes | No | No | No | No | Yes |
-| Cancel prepaid codes | No | No | No | No | Yes |
-| Redeem prepaid code | For self | For linked student | No | No | Support only if defined |
-| View student balance | Own | Linked student | No | No | Yes |
-| Adjust student balance | No | No | No | No | Yes |
-| Enroll in course | Own account | Not confirmed in MVP | No | No | Support only if defined |
-| Watch lesson | Enrolled courses | No | Own course preview | Center-linked course preview if supported | Support |
-| Submit quiz | Enrolled courses | No | No | No | Support only if defined |
-| View progress | Own | Linked student | Own course students | Linked teacher/course students | All |
-| View reports | Own learning only | Linked student only | Own courses | Linked teachers/courses | All |
+| Action | Student | Parent | Teacher | Admin |
+| --- | --- | --- | --- | --- |
+| Register/login | Yes | Yes | Yes, after account exists | Yes |
+| Browse published courses | Yes | Yes | Yes | Yes |
+| Create course | No | No | Own courses | Support/Admin |
+| Submit course for approval | No | No | Own courses | No |
+| Approve course | No | No | No | Yes |
+| Generate prepaid codes | No | No | No | Yes |
+| Cancel prepaid codes | No | No | No | Yes |
+| Redeem prepaid code | For self | For linked student | No | Support only if defined |
+| View student balance | Own | Linked student | No | Yes |
+| Adjust student balance | No | No | No | Yes |
+| Enroll in course | Own account | Not confirmed in MVP | No | Support only if defined |
+| Watch lesson | Enrolled courses | No | Own course preview | Support |
+| Submit quiz | Enrolled courses | No | No | Support only if defined |
+| View progress | Own | Linked student | Own course students | All |
+| View reports | Own learning only | Linked student only | Own courses | All |
 
 ## 9. Relationship Rules
 
@@ -296,28 +365,12 @@ Teacher cannot access:
 - Student balance
 - Admin approval actions
 
-### Education Center Access
-
-Education center can access:
-
-- Own center profile
-- Linked teachers
-- Courses owned by linked teachers
-- Reports for linked teachers and courses
-
-Education center cannot access:
-
-- Unlinked teachers
-- Other centers' data
-- Admin prepaid code management
-- Platform settings
-
 ### Admin Access
 
 Admin can access:
 
 - User management
-- Teacher and center approval
+- Teacher approval
 - Course approval
 - Curriculum management
 - Prepaid code management
@@ -386,8 +439,7 @@ Allowed if:
 1. Student views own progress.
 2. Parent views linked student progress.
 3. Teacher views progress for students in own courses.
-4. Center views progress for linked teacher courses.
-5. Admin views progress for any student.
+4. Admin views progress for any student.
 ```
 
 ## 11. Authorization Flow
@@ -463,7 +515,6 @@ COURSE_NOT_PUBLISHED
 NOT_ENROLLED
 PARENT_STUDENT_LINK_REQUIRED
 TEACHER_DOES_NOT_OWN_COURSE
-CENTER_TEACHER_LINK_REQUIRED
 PREPAID_CODE_NOT_ACTIVE
 ```
 
@@ -491,7 +542,6 @@ Audit these actions:
 
 ```text
 Teacher approved/rejected
-Education center approved/rejected
 Course approved/rejected
 Course price changed by admin
 Prepaid codes generated
@@ -551,8 +601,6 @@ The most important authorization relationships are:
 - Student owns own learning data.
 - Parent links to student.
 - Teacher owns course.
-- Center links to teacher.
 - Student enrollment grants paid course access.
 
 The next step is video streaming design.
-

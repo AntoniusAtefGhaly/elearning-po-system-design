@@ -1,0 +1,83 @@
+﻿Module 01: Identity & Access Management
+Business Analysis Document - Example
+1. Module Purpose
+Identity & Access Management handles user registration, login, roles, permissions, and account access for the e-learning platform.
+2. Scope
+Student registration and login
+Parent registration and login
+Teacher account approval by admin
+Admin login and user management
+Role-based access control
+Basic profile update
+3. Actors
+Actor
+Need
+Student
+Create account, log in, access enrolled learning content
+Parent
+Create account, link to student, view progress and redeem codes
+Teacher
+Access teacher dashboard after approval
+Admin
+Approve teachers and manage user accounts
+4. Business Rules
+Rule ID
+Business Rule
+BR-01
+Students can register without parent approval.
+BR-02
+Parents can register and link to students using student ID.
+BR-03
+Teachers cannot publish courses before admin approval.
+BR-04
+Each user must have one primary role in MVP.
+BR-05
+Users can access only screens allowed for their role.
+BR-06
+Admin actions should be recorded for audit.
+5. Functional Requirements
+ID
+Requirement
+FR-01
+The system shall allow students to create accounts.
+FR-02
+The system shall allow parents to create accounts.
+FR-03
+The system shall allow users to log in and log out.
+FR-04
+The system shall allow users to update basic profile data.
+FR-05
+The system shall allow teacher accounts to be submitted for approval.
+FR-06
+The system shall allow admin to approve or reject teachers.
+FR-07
+The system shall enforce role-based access to screens and actions.
+FR-08
+The system shall prevent duplicate registration using the same phone or email.
+6. User Stories
+Story ID
+User Story
+Acceptance Criteria
+US-01
+As a student, I want to register so that I can use the platform.
+Student enters required data; duplicate phone/email is rejected; account is created.
+US-02
+As a parent, I want to register so that I can follow my child.
+Parent enters required data; account is created; parent can log in.
+US-03
+As a teacher, I want my account approved so that I can create courses.
+Teacher submits profile data; admin approves/rejects; rejected teacher cannot publish.
+US-04
+As an admin, I want to manage user accounts so that platform access is controlled.
+Admin can view users; update status; approve teachers.
+7. Data Objects
+Object
+Important Fields
+User
+ID, name, phone, email, password, role, status
+Student Profile
+User ID, student ID, secondary year
+Parent Profile
+User ID
+Teacher Profile
+User ID, subject, bio, profile image, documents, approval status

@@ -39,7 +39,7 @@ The first release supports:
 - Redeem prepaid code
 - Enroll in a course
 - Watch lessons
-- Solve basic MCQ quizzes
+- Solve quizzes and assessments
 - View progress
 
 ### Parent
@@ -75,6 +75,11 @@ The first release supports:
 - English interface
 - Subject bundles
 - Direct online payment gateway
+- Subscriptions and invoices
+- Free course enrollment
+- Course archive/delete/restore lifecycle
+- Notifications
+- Attendance tracking
 - Advanced video watermarking
 - Parent-student link approval workflow
 
@@ -95,7 +100,7 @@ The first release supports:
 | R-11 | Prepaid codes are distributed manually in the MVP. |
 | R-12 | Refunds are handled manually; admin resets student balance to 0 and money is returned outside the system. |
 | R-13 | Lesson completion can be manual or automatic. |
-| R-14 | MVP quizzes use MCQ questions only. |
+| R-14 | Assessment and grading scope follows the Assessment Management and Grading Management module documents. |
 | R-15 | Student balance can be used partially across multiple courses. |
 | R-16 | Student balance cannot become negative. |
 | R-17 | Admin can manually add or subtract student balance. |
@@ -111,9 +116,10 @@ The first release supports:
 | R-27 | Admin can edit teacher course prices. |
 | R-28 | Automatic lesson completion happens after watching 90% of the video. |
 | R-29 | Quiz score is shown to student. |
-| R-30 | Quiz retry is not allowed in MVP. |
+| R-30 | Quiz retry is allowed in MVP. |
 | R-31 | Quiz result affects course progress. |
 | R-32 | MVP reports include codes, enrollments, teacher sales, and student progress. |
+| R-33 | MVP payment uses prepaid codes and student balance only; payment gateway is future scope. |
 
 ## 8. Success for This Training Project
 
