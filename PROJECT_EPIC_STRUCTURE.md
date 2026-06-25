@@ -1,955 +1,1440 @@
-# E-Learning Platform Backlog Structure
+# Learning Management System Backlog
 
-## Project: Learning Management System (LMS)
+## Project: E-Learning Platform
 
-This backlog uses a small number of business-focused epics. Technical foundation, security, testing, and operations are included as enabling features inside the business epics.
-
-## Backlog Hierarchy
+## Structure
 
 ```text
 Project
 └── Epic
-    └── Feature
-        └── User Story
-            ├── FE Task
-            ├── BE Task
-            └── QA Task
+    └── Feature / User Story
+        └── FE / BE / QA Tasks
 ```
 
+## Guidelines
+
+- Each LMS module is represented by its own Epic.
+- Business user stories come from the `User Stories` section of the documents in `Modules`.
+- Original story IDs are shown with their module prefix because some documents reuse the same IDs.
+- Features group related stories without splitting the work too deeply.
+- FE, BE, and QA tasks are intentionally broad because this is a learning project.
+- Technical stories are included only where they establish shared project foundations.
+
 ---
 
-## Epic 1: Platform Access and User Administration
+# Epic 0: Technical Foundation
 
-### Business Objective
+## Epic Goal
 
-Enable students, parents, teachers, and administrators to access the LMS securely and manage their accounts, profiles, roles, and academic master data.
+Create a working technical foundation that allows the team to develop all LMS business modules using consistent architecture, API, UI, database, security, testing, and delivery standards.
 
-### Feature 1.1: LMS Technical Foundation
+---
 
-#### User Story: Establish the LMS Application Foundation
+## Feature 0.1: Solution and Clean Architecture
+
+### TECH-01: Create the Backend Solution Structure
+
+**Technical Story:** As a backend team, we want a Clean Architecture solution so that business modules are separated, testable, and maintainable.
+
+**Acceptance Criteria**
+
+- The solution builds without errors.
+- The solution contains API, Application, Domain, Infrastructure, Resources, Database, and test projects.
+- Project dependencies follow Clean Architecture rules.
+- Business logic does not exist inside API controllers.
+- Domain does not depend on Application, Infrastructure, or API.
+- Application does not depend on Infrastructure or API.
+- Every project has a clear responsibility documented in the project README.
 
 **FE Tasks**
 
-- Create the frontend application and module structure.
-- Configure routing, environments, state management, and API communication.
-- Create the shared Arabic RTL application layout.
-- Create shared form, table, dialog, loading, empty, and error components.
-- Configure frontend validation and error handling.
-- Configure frontend unit and component testing.
+- Review the API project naming and planned module boundaries with the BE team.
+- Agree on request, response, pagination, validation-error, and date formats.
 
 **BE Tasks**
 
-- Create the Clean Architecture solution.
-- Create Domain, Application, Infrastructure, API, Resources, Database, and test projects.
-- Configure project references and dependency injection.
-- Configure MediatR, validation, mapping, localization, and common result models.
-- Configure the application database and initial migration.
-- Configure logging, correlation IDs, exception handling, Swagger, CORS, and health checks.
-- Configure backend unit and integration testing.
+- Create the main solution and `src` and `tests` folders.
+- Create the Domain project for entities, value objects, enums, and domain rules.
+- Create the Application project for use cases, commands, queries, DTOs, validators, and interfaces.
+- Create the Infrastructure project for database access, repositories, storage, email, and external services.
+- Create the API project for controllers, middleware, filters, and startup configuration.
+- Create the Resources project for English and Arabic messages.
+- Create a Database project or agreed migration location.
+- Create Application and API test projects.
+- Configure project references and dependency injection registration.
+- Enable nullable reference types and common build settings.
+- Add `.editorconfig`, `.gitignore`, and basic coding conventions.
+- Add a sample module folder that demonstrates the expected structure.
 
 **QA Tasks**
 
-- Define the LMS test strategy and defect workflow.
-- Define test entry and exit criteria.
-- Verify that FE and BE applications build and run.
-- Verify database creation and migration execution.
-- Verify Arabic RTL behavior on supported browsers.
+- Verify that the complete solution restores and builds.
+- Verify that invalid project references are not introduced.
+- Review the sample module structure with FE and BE.
 
-### Feature 1.2: Registration and Authentication
+### TECH-02: Define Shared Application Standards
 
-#### User Story: Register and Sign In as an LMS User
+**Technical Story:** As a development team, we want shared implementation standards so that every LMS module follows the same patterns.
+
+**Acceptance Criteria**
+
+- Commands, queries, DTOs, validators, and handlers use one agreed structure.
+- APIs return a consistent success and error format.
+- Pagination, sorting, filtering, date, and enum formats are documented.
+- A sample end-to-end operation demonstrates the agreed pattern.
 
 **FE Tasks**
 
-- Create student registration.
-- Create parent registration.
-- Create login and logout.
-- Handle invalid credentials and expired sessions.
-- Create unauthorized and access-denied pages.
+- Define TypeScript models for the common API response and paginated response.
+- Define common handling for validation, business, unauthorized, forbidden, and server errors.
+- Agree on date, time-zone, enum, and file-upload formats.
 
 **BE Tasks**
 
-- Implement student and parent registration.
-- Configure authentication and secure session handling.
-- Implement login, logout, and current-user services.
-- Prevent duplicate accounts.
-- Record important authentication events.
+- Configure MediatR or the selected application request pattern.
+- Create common `Result` and paginated-result models.
+- Create pagination, sorting, and filtering request models.
+- Configure request validation and pipeline behavior.
+- Configure object mapping where required.
+- Define common application exceptions and error codes.
+- Add a simple sample command, query, handler, validator, and controller.
+- Document naming conventions for features, endpoints, DTOs, commands, and queries.
 
 **QA Tasks**
 
-- Test student and parent registration.
-- Test valid and invalid login.
-- Test duplicate registration.
-- Test logout and expired sessions.
-- Test disabled and suspended accounts.
+- Verify common success and error responses.
+- Verify pagination, sorting, and filtering behavior.
+- Verify the sample operation from API request to database response.
 
-### Feature 1.3: Roles and Permissions
+---
 
-#### User Story: Access LMS Functions According to User Role
+## Feature 0.2: Database Foundation
+
+### TECH-03: Configure Database Access and Migrations
+
+**Technical Story:** As a backend team, we want a standard database foundation so that LMS data is stored consistently and schema changes are controlled.
+
+**Acceptance Criteria**
+
+- The application connects to the local development database.
+- The initial migration can create the database successfully.
+- Entity mappings and database constraints use agreed conventions.
+- Audit fields are populated consistently.
+- Database configuration is not hard-coded in source code.
 
 **FE Tasks**
 
-- Add role-based route guards.
-- Show or hide actions based on permissions.
-- Create role-specific navigation for Student, Parent, Teacher, and Admin.
+- Confirm the identifiers, timestamps, enum values, and pagination metadata expected from the API.
 
 **BE Tasks**
 
+- Create the application `DbContext`.
+- Configure the database provider and connection string.
+- Create base entity and auditable entity models.
+- Define conventions for primary keys, foreign keys, table names, schemas, indexes, and decimal values.
+- Configure entity mappings using Fluent API.
+- Configure created, updated, and optional soft-delete fields.
+- Create the initial migration.
+- Create a controlled seed-data mechanism for roles and essential reference data.
+- Configure transaction handling for multi-step business operations.
+- Document migration creation and database update commands.
+- Ensure secrets and connection strings can be supplied through environment configuration.
+
+**QA Tasks**
+
+- Create a database from the initial migration.
+- Verify migration execution on a clean database.
+- Verify seed data does not create duplicates when executed again.
+- Verify required constraints, relationships, and audit fields.
+
+---
+
+## Feature 0.3: API Foundation
+
+### TECH-04: Configure API Standards and Middleware
+
+**Technical Story:** As an API consumer, we want consistent API behavior so that frontend integration and troubleshooting are predictable.
+
+**Acceptance Criteria**
+
+- Swagger documents the available endpoints and models.
+- API errors use the common response format.
+- Every request has a correlation ID.
+- CORS, localization, health checks, and API configuration work.
+- Sensitive implementation details are not returned in production errors.
+
+**FE Tasks**
+
+- Configure the base API URL for each environment.
+- Create the shared HTTP client and interceptors.
+- Add common API error and loading handling.
+- Verify the sample API integration from the frontend.
+
+**BE Tasks**
+
+- Configure controllers and API routing conventions.
+- Configure Swagger and XML documentation.
+- Add global exception-handling middleware.
+- Add correlation-ID middleware.
+- Configure request and response logging without exposing passwords or tokens.
+- Configure CORS for approved frontend origins.
+- Configure English and Arabic localization.
+- Add application and database health checks.
+- Configure environment-specific settings.
+- Add API versioning only if required by the project standard.
+- Create a base controller or shared response helper only when needed.
+
+**QA Tasks**
+
+- Verify Swagger endpoint definitions and response examples.
+- Test validation, not-found, unauthorized, forbidden, conflict, and server-error responses.
+- Verify correlation IDs in responses and logs.
+- Verify CORS, localization, and health checks.
+
+---
+
+## Feature 0.4: Security Foundation
+
+### TECH-05: Configure Authentication and Authorization Infrastructure
+
+**Technical Story:** As a platform team, we want secure authentication and authorization foundations so that LMS users and APIs are protected.
+
+**Acceptance Criteria**
+
+- Authentication middleware validates access tokens.
+- Authorization policies can protect endpoints by role and permission.
+- Passwords and security tokens are never stored as plain text.
+- Secrets are loaded through secure configuration.
+- Security events can be audited.
+
+**FE Tasks**
+
+- Create the authentication-state structure.
+- Add route guards and unauthorized handling.
+- Define secure access-token handling according to the selected authentication approach.
+- Avoid storing sensitive values in insecure browser storage.
+
+**BE Tasks**
+
+- Configure the selected identity and authentication framework.
+- Configure secure password hashing and password-policy settings.
+- Configure access-token and refresh-token options.
+- Create the current-user service.
 - Define Student, Parent, Teacher, and Admin roles.
-- Define permissions and authorization policies.
-- Protect API endpoints and business resources.
-- Seed initial roles and permissions.
+- Define the initial permission and authorization-policy structure.
+- Add authentication and authorization middleware.
+- Configure secret and token settings through environment configuration.
+- Add placeholders for security-event and audit logging.
+- Configure secure headers and rate-limiting foundations where required.
 
 **QA Tasks**
 
-- Test the permission matrix for every role.
-- Test direct URL and API access.
-- Test resource ownership restrictions.
-- Test permission changes.
-
-### Feature 1.4: Teacher Onboarding and Administration
-
-#### User Story: Apply and Maintain a Teacher Profile
-
-**FE Tasks**
-
-- Create the teacher profile form.
-- Support subject, biography, profile image, and document entry.
-- Allow teachers to update permitted profile information.
-- Display teacher verification status and rejection reason.
-
-**BE Tasks**
-
-- Create and update teacher profiles.
-- Store teacher subjects, images, and documents.
-- Prevent duplicate teacher accounts.
-- Restrict course creation to approved teachers and verified subjects.
-
-**QA Tasks**
-
-- Test complete and incomplete teacher applications.
-- Test duplicate teacher prevention.
-- Test teacher profile updates.
-- Test subject restrictions.
-
-#### User Story: Review and Manage Teacher Applications
-
-**FE Tasks**
-
-- Create the admin teacher-review queue.
-- Create teacher application details.
-- Add approve, reject, and suspend actions.
-- Require a rejection or suspension reason.
-
-**BE Tasks**
-
-- Create teacher application queries.
-- Implement approval, rejection, and suspension workflows.
-- Store decisions, reasons, users, and timestamps.
-- Enforce teacher status in protected operations.
-
-**QA Tasks**
-
-- Test approval, rejection, and suspension.
-- Test required reasons.
-- Test invalid status transitions.
-- Verify decision history.
-
-### Feature 1.5: Student and Parent Profiles
-
-#### User Story: Manage a Student Profile
-
-**FE Tasks**
-
-- Create the student profile page.
-- Allow updates to permitted profile fields.
-- Create the student dashboard shell.
-
-**BE Tasks**
-
-- Create student profile queries and update commands.
-- Enforce editable-field and authorization rules.
-- Record profile changes.
-
-**QA Tasks**
-
-- Test student profile retrieval and updates.
-- Test invalid data.
-- Test unauthorized profile access.
-
-#### User Story: Link a Parent to a Student
-
-**FE Tasks**
-
-- Create the parent dashboard.
-- Create the link-student form using student ID.
-- Display linked students.
-
-**BE Tasks**
-
-- Implement parent-to-student linking.
-- Validate student ID and prevent duplicate links.
-- Restrict parent access to linked students.
-
-**QA Tasks**
-
-- Test valid and invalid student links.
-- Test duplicate links.
-- Test parent access isolation.
-
-### Feature 1.6: Academic Master Data
-
-#### User Story: Manage the LMS Academic Structure
-
-**FE Tasks**
-
-- Create management pages for secondary years, subjects, terms, chapters, and categories.
-- Add search, filtering, activation, and deactivation.
-- Create reusable lookup selectors.
-
-**BE Tasks**
-
-- Implement CRUD and status management for academic master data.
-- Enforce uniqueness and dependency rules.
-- Provide lookup APIs for course and reporting modules.
-- Add reference-data caching where appropriate.
-
-**QA Tasks**
-
-- Test academic-data creation and updates.
-- Test duplicate values.
-- Test activation and deactivation.
-- Test dependent-data restrictions.
+- Verify protected endpoints reject anonymous users.
+- Verify role and policy restrictions.
+- Verify passwords, tokens, and secrets are not exposed in responses or logs.
+- Verify expired and invalid token behavior.
 
 ---
 
-## Epic 2: Course Marketplace and Content Lifecycle
+## Feature 0.5: Frontend Foundation
 
-### Business Objective
+### TECH-06: Create the Frontend Application Structure
 
-Allow approved teachers to build structured courses, enable administrators to review and publish them, and allow users to discover published courses.
+**Technical Story:** As a frontend team, we want a consistent application structure and design foundation so that LMS screens can be developed efficiently.
 
-### Feature 2.1: Course Authoring
+**Acceptance Criteria**
 
-#### User Story: Create and Maintain a Course Draft
-
-**FE Tasks**
-
-- Create the teacher course list.
-- Create course create and edit forms.
-- Support title, description, price, subject, year, term, chapter, category, and image.
-- Display course lifecycle status.
-
-**BE Tasks**
-
-- Create course commands and queries.
-- Enforce teacher approval and verified-subject rules.
-- Validate course ownership and editable statuses.
-- Allow administrators to edit course prices.
-- Record course change history.
-
-**QA Tasks**
-
-- Test draft creation and editing.
-- Test ownership and subject restrictions.
-- Test course pricing rules.
-- Test invalid status updates.
-
-### Feature 2.2: Course Structure and Learning Materials
-
-#### User Story: Organize a Course into Modules and Lessons
+- The frontend builds and runs for development and production.
+- Routing and lazy-loaded business modules work.
+- Arabic RTL layout is supported.
+- Shared API, form, validation, loading, error, and notification patterns are available.
+- The application works on agreed desktop and mobile viewports.
 
 **FE Tasks**
 
-- Create the course structure editor.
-- Add, edit, reorder, and remove modules and lessons.
-- Display content completeness.
+- Create the frontend project using the approved framework and version.
+- Define `core`, `shared`, `layout`, and business-module folders.
+- Configure development, QA, and production environments.
+- Configure routing and lazy loading.
+- Create the public, authenticated, Admin, Teacher, Student, and Parent layout foundations.
+- Configure global styling, typography, Arabic RTL direction, and responsive breakpoints.
+- Create shared buttons, inputs, selectors, tables, dialogs, alerts, and file-upload controls.
+- Configure reactive forms and common validators.
+- Configure global loading and error handling.
+- Create the API client and authentication interceptor.
+- Add shared notification and confirmation services.
+- Configure frontend linting, formatting, and testing.
 
 **BE Tasks**
 
-- Implement module and lesson management.
-- Support ordering and hierarchy validation.
-- Prevent invalid deletion of referenced content.
+- Provide the sample API contract used for frontend integration.
+- Support frontend environment and CORS configuration.
+- Agree on upload, download, localization, and pagination contracts.
 
 **QA Tasks**
 
-- Test module and lesson operations.
-- Test ordering.
-- Test invalid hierarchy changes.
-- Test ownership restrictions.
-
-#### User Story: Upload Course Learning Materials
-
-**FE Tasks**
-
-- Add video and document upload controls.
-- Display upload progress and material metadata.
-- Add preview, download, and removal actions where permitted.
-
-**BE Tasks**
-
-- Implement secure media upload and storage.
-- Validate file type, size, and ownership.
-- Store media metadata.
-- Protect learning files from unauthorized access.
-- Support non-downloadable video delivery.
-
-**QA Tasks**
-
-- Test allowed and blocked files.
-- Test maximum file size.
-- Test upload failure recovery.
-- Test unauthorized media access.
-- Verify video URLs are not directly downloadable.
-
-### Feature 2.3: Course Review and Publishing
-
-#### User Story: Submit a Course for Administrative Review
-
-**FE Tasks**
-
-- Add course completeness validation.
-- Add review submission and confirmation.
-- Display review status and admin feedback.
-
-**BE Tasks**
-
-- Validate course readiness.
-- Implement review submission.
-- Prevent edits that conflict with the review workflow.
-- Record submission history.
-
-**QA Tasks**
-
-- Test complete and incomplete submissions.
-- Test repeated submissions.
-- Test status and edit restrictions.
-
-#### User Story: Approve, Reject, and Publish a Course
-
-**FE Tasks**
-
-- Create the admin course-review queue.
-- Create the review details page.
-- Add approve and reject actions.
-- Require rejection feedback.
-
-**BE Tasks**
-
-- Implement approval, rejection, and publication.
-- Enforce valid lifecycle transitions.
-- Publish only complete approved courses.
-- Record reviewer decisions and timestamps.
-
-**QA Tasks**
-
-- Test approval, rejection, and publication.
-- Test required rejection feedback.
-- Test invalid transitions.
-- Verify unpublished courses remain inaccessible.
-
-### Feature 2.4: Course Catalog and Details
-
-#### User Story: Discover Published Courses
-
-**FE Tasks**
-
-- Create the public course catalog.
-- Add search and filters for year, subject, term, chapter, and teacher.
-- Add sorting and pagination.
-- Create responsive course cards and empty states.
-
-**BE Tasks**
-
-- Create the published-course search API.
-- Implement filters, sorting, and pagination.
-- Exclude draft, rejected, and suspended content.
-- Optimize catalog queries.
-
-**QA Tasks**
-
-- Test search and every filter.
-- Test combined filters and pagination.
-- Verify only published courses are returned.
-- Test mobile and desktop layouts.
-
-#### User Story: View Course Details Before Purchase
-
-**FE Tasks**
-
-- Create the course details page.
-- Display teacher, price, description, subject, structure, and lesson summary.
-- Display enrollment or purchase status.
-
-**BE Tasks**
-
-- Create the public course-details query.
-- Return permitted course and teacher information.
-- Hide protected lesson content before enrollment.
-
-**QA Tasks**
-
-- Validate course details.
-- Test missing and unpublished courses.
-- Verify protected content is hidden.
+- Verify development and production builds.
+- Verify routing, layouts, RTL direction, and responsive behavior.
+- Verify shared validation, loading, and error states.
+- Verify the sample frontend-to-API flow.
 
 ---
 
-## Epic 3: Student Wallet, Purchase, and Enrollment
+## Feature 0.6: Testing and Quality Foundation
 
-### Business Objective
+### TECH-07: Establish Automated Testing and Quality Standards
 
-Enable administrators to distribute prepaid value, allow students or parents to redeem it, and convert student balance into secure course enrollment.
+**Technical Story:** As a development team, we want automated quality checks so that regressions are detected early.
 
-### Feature 3.1: Prepaid Code Administration
+**Acceptance Criteria**
 
-#### User Story: Generate and Manage Prepaid Codes
-
-**FE Tasks**
-
-- Create the prepaid-code management page.
-- Add code generation by value and quantity.
-- Display serial number, value, status, and redemption information.
-- Add cancellation for active codes.
-
-**BE Tasks**
-
-- Generate unique prepaid codes and serial numbers.
-- Support active, used, and cancelled statuses.
-- Prevent changes to used codes.
-- Record generation, distribution, cancellation, and redemption history.
-- Ensure prepaid codes do not expire.
-
-**QA Tasks**
-
-- Test code generation and uniqueness.
-- Test status transitions.
-- Test active-code cancellation.
-- Test restrictions for used codes.
-- Verify audit history.
-
-### Feature 3.2: Student Balance
-
-#### User Story: Redeem a Prepaid Code for a Student
+- FE and BE test projects execute successfully.
+- A sample unit test and integration test demonstrate the expected patterns.
+- Test data and test configuration do not depend on production systems.
+- Pull requests have agreed review and quality expectations.
 
 **FE Tasks**
 
-- Create student code redemption.
-- Create parent redemption for a selected linked student.
-- Display the updated student balance.
-- Display clear invalid-code errors.
+- Configure the frontend unit-test framework.
+- Add a sample component or service test.
+- Configure linting and formatting checks.
+- Define the frontend test-file and test-case naming conventions.
 
 **BE Tasks**
 
-- Validate active and unused codes.
-- Redeem each code for one student only.
-- Add code value to student balance atomically.
-- Record redemption history.
-- Prevent duplicate and concurrent redemption.
+- Configure Application unit tests.
+- Configure API integration tests.
+- Add test fixtures and reusable test-data builders where useful.
+- Add a sample handler unit test.
+- Add a sample API integration test.
+- Configure code coverage reporting.
+- Define which business rules require unit or integration tests.
 
 **QA Tasks**
 
-- Test student and parent redemption.
-- Test invalid, used, and cancelled codes.
-- Test concurrent redemption attempts.
-- Verify balance and redemption history.
-
-#### User Story: Administer Student Balance
-
-**FE Tasks**
-
-- Create student balance administration.
-- Add manual credit, debit, and reset-to-zero actions.
-- Require an adjustment reason.
-- Display balance transaction history.
-
-**BE Tasks**
-
-- Implement manual balance adjustments.
-- Prevent negative balances.
-- Store amount, reason, administrator, and timestamp.
-- Support reset-to-zero for manual refund handling.
-
-**QA Tasks**
-
-- Test credit, debit, and reset.
-- Test insufficient balance.
-- Test required adjustment reasons.
-- Verify transaction history.
-
-### Feature 3.3: Paid Course Enrollment
-
-#### User Story: Purchase and Enroll in a Course
-
-**FE Tasks**
-
-- Create the course-purchase confirmation flow.
-- Display price, available balance, and resulting balance.
-- Display enrollment success and failure states.
-
-**BE Tasks**
-
-- Validate the student, course, publication status, and balance.
-- Deduct the course price and create enrollment in one transaction.
-- Prevent duplicate enrollment.
-- Prevent the balance from becoming negative.
-- Record enrollment and wallet transactions.
-
-**QA Tasks**
-
-- Test successful purchase.
-- Test insufficient balance.
-- Test duplicate enrollment.
-- Test unpublished courses.
-- Test concurrent purchase attempts.
-- Verify transaction consistency.
-
-### Feature 3.4: Enrollment Access and Lifecycle
-
-#### User Story: Access Only Purchased Courses
-
-**FE Tasks**
-
-- Create the student My Courses page.
-- Display active and completed enrollments.
-- Route students to enrolled course content.
-- Display an access-denied state when required.
-
-**BE Tasks**
-
-- Create student enrollment queries.
-- Enforce enrollment-based course and media access.
-- Preserve purchased access when a teacher is suspended.
-- Prevent access to unpublished or unauthorized content.
-
-**QA Tasks**
-
-- Test enrolled and non-enrolled access.
-- Test direct API and media access.
-- Test teacher suspension behavior.
-- Test completed enrollments.
-
-#### User Story: Allow Teachers to View Course Enrollments
-
-**FE Tasks**
-
-- Create the teacher course-student list.
-- Display enrollment and progress summaries.
-- Add search and filtering.
-
-**BE Tasks**
-
-- Create teacher enrollment queries.
-- Restrict results to teacher-owned courses.
-- Return student enrollment and progress summaries.
-
-**QA Tasks**
-
-- Test teacher-owned course access.
-- Test cross-teacher data isolation.
-- Test filtering and pagination.
+- Define the test strategy for functional, integration, regression, security, and performance testing.
+- Define severity, priority, and defect states.
+- Create a smoke-test checklist for every deployment.
+- Define minimum Definition of Ready and Definition of Done criteria.
 
 ---
 
-## Epic 4: Learning Delivery, Assessment, and Academic Outcomes
+## Feature 0.7: Logging, Audit, and Monitoring
 
-### Business Objective
+### TECH-08: Configure Application Observability
 
-Deliver purchased learning content, track student progress, assess learning, publish grades, and give students and parents visibility into academic outcomes.
+**Technical Story:** As a support team, we want useful logs and health information so that failures can be diagnosed.
 
-### Feature 4.1: Lesson Delivery and Progress
+**Acceptance Criteria**
 
-#### User Story: Learn Through Enrolled Course Lessons
-
-**FE Tasks**
-
-- Create the lesson player.
-- Display course navigation and lesson materials.
-- Track video playback progress.
-- Allow manual lesson completion.
-- Automatically request completion after 90% video viewing.
-
-**BE Tasks**
-
-- Provide secure lesson-content access.
-- Record video watch progress.
-- Record manual and automatic lesson completion.
-- Make progress updates idempotent.
-- Calculate course progress.
-
-**QA Tasks**
-
-- Test lesson navigation and playback.
-- Test manual completion.
-- Test automatic completion at 90%.
-- Test repeated and out-of-order progress updates.
-- Test unauthorized access.
-
-#### User Story: View Student Course Progress
+- Logs contain timestamp, level, environment, application, and correlation ID.
+- Exceptions are logged with useful technical context.
+- Passwords, tokens, and personal data are not exposed.
+- Health endpoints report application and database status.
+- The logging destination can be changed by environment.
 
 **FE Tasks**
 
-- Create the student progress page.
-- Display completed lessons, assessment contribution, and overall percentage.
-- Display progress on the student dashboard and My Courses.
+- Add global client-error handling.
+- Include the server correlation ID when displaying or reporting unexpected errors.
+- Avoid logging tokens, passwords, or personal information in the browser.
 
 **BE Tasks**
 
-- Create student progress queries.
-- Calculate lesson and assessment progress.
-- Mark enrollment completed according to business rules.
+- Configure structured application logging.
+- Add request correlation and exception logging.
+- Define audit-log fields for important business and Admin actions.
+- Configure health checks for the API and database.
+- Configure environment-specific logging levels and destinations.
+- Add sensitive-data filtering.
+- Document how developers trace an error using a correlation ID.
 
 **QA Tasks**
 
-- Validate progress calculations.
-- Test partial and complete courses.
-- Test enrollment completion.
-
-### Feature 4.2: Assessment Authoring
-
-#### User Story: Create and Publish Course Assessments
-
-**FE Tasks**
-
-- Create teacher assessment management.
-- Create exam and quiz forms.
-- Add objective and essay questions with answers and scores.
-- Add assessment publication controls.
-
-**BE Tasks**
-
-- Implement assessment, question, and answer management.
-- Validate total scores and correct-answer rules.
-- Restrict assessments to teacher-owned courses.
-- Implement assessment publication.
-- Prevent unsafe edits after student submissions.
-
-**QA Tasks**
-
-- Test exam and quiz creation.
-- Test question types and score validation.
-- Test publication requirements.
-- Test ownership restrictions.
-- Test editing after submissions.
-
-### Feature 4.3: Assessment Participation
-
-#### User Story: Complete a Published Assessment
-
-**FE Tasks**
-
-- Create the student assessment page.
-- Display questions and answer controls.
-- Save or submit answers according to business rules.
-- Display submission confirmation.
-- Support quiz retry.
-
-**BE Tasks**
-
-- Validate enrollment and published-assessment access.
-- Create assessment attempts and answer submissions.
-- Prevent invalid or duplicate final submissions.
-- Support quiz retries.
-- Record attempt timestamps and status.
-
-**QA Tasks**
-
-- Test objective and essay answers.
-- Test unauthorized and unpublished assessment access.
-- Test duplicate submission.
-- Test quiz retries.
-- Test interrupted attempts.
-
-### Feature 4.4: Grading and Result Publishing
-
-#### User Story: Grade Student Assessment Attempts
-
-**FE Tasks**
-
-- Create the teacher submission-review page.
-- Display submitted answers.
-- Support manual essay grading and feedback.
-- Display automatically calculated objective scores.
-
-**BE Tasks**
-
-- Automatically grade objective questions.
-- Support manual essay grading.
-- Calculate total score, percentage, and pass/fail result.
-- Restrict grading to authorized teachers.
-- Record grading history.
-
-**QA Tasks**
-
-- Validate automatic grading.
-- Test manual grading.
-- Test mixed question types.
-- Test score boundaries.
-- Test grading authorization.
-
-#### User Story: Publish and Correct Assessment Results
-
-**FE Tasks**
-
-- Create result review and publication.
-- Allow result correction with a mandatory reason.
-- Display publication and correction history.
-
-**BE Tasks**
-
-- Implement result generation and publication.
-- Prevent students from viewing unpublished results.
-- Support result changes with a required reason.
-- Recalculate affected progress.
-- Record all grading changes.
-
-**QA Tasks**
-
-- Test result generation and publication.
-- Test unpublished-result protection.
-- Test result correction.
-- Verify audit history and progress recalculation.
-
-### Feature 4.5: Student and Parent Academic Views
-
-#### User Story: View My Learning Results
-
-**FE Tasks**
-
-- Create the student results page.
-- Display score, percentage, pass/fail status, feedback, and attempt history.
-
-**BE Tasks**
-
-- Create student result queries.
-- Return published results only.
-- Restrict data to the authenticated student.
-
-**QA Tasks**
-
-- Test published and unpublished results.
-- Test result accuracy.
-- Test student data isolation.
-
-#### User Story: Monitor a Linked Student's Learning
-
-**FE Tasks**
-
-- Create parent views for enrollments, progress, and grades.
-- Allow switching between linked students.
-
-**BE Tasks**
-
-- Create parent progress and result queries.
-- Restrict access to linked students.
-- Return published results only.
-
-**QA Tasks**
-
-- Test linked-student progress and grades.
-- Test switching between students.
-- Test unlinked-student access.
+- Generate a controlled error and verify its correlation ID.
+- Verify health responses for healthy and unavailable dependencies.
+- Verify that sensitive data does not appear in logs.
+- Verify that audit records include actor, action, target, reason, and timestamp where applicable.
 
 ---
 
-## Epic 5: Business Operations, Reporting, and Release
+## Feature 0.8: Local Development and Delivery
 
-### Business Objective
+### TECH-09: Prepare Development Workflow and CI Foundation
 
-Give administrators and teachers operational control, reliable business reports, auditability, system monitoring, and a production-ready LMS.
+**Technical Story:** As a development team, we want repeatable local setup and build validation so that every developer can work consistently.
 
-### Feature 5.1: Role-Based Dashboards
+**Acceptance Criteria**
 
-#### User Story: View an Operational LMS Dashboard
-
-**FE Tasks**
-
-- Create Admin, Teacher, Student, and Parent dashboards.
-- Display role-relevant summaries and quick actions.
-- Add loading, empty, and error states.
-
-**BE Tasks**
-
-- Create role-specific dashboard summary APIs.
-- Enforce role and ownership restrictions.
-- Optimize dashboard queries.
-
-**QA Tasks**
-
-- Validate dashboard values.
-- Test every role.
-- Test data isolation and performance.
-
-### Feature 5.2: Business Reporting
-
-#### User Story: Analyze LMS Business Performance
+- A new developer can run FE, BE, and the database using documented steps.
+- Environment settings and secrets are documented without committing secret values.
+- The build process validates compilation and automated tests.
+- Branch, pull-request, and code-review rules are documented.
 
 **FE Tasks**
 
-- Create reports for course enrollments, prepaid codes, teacher sales, and student progress.
-- Add date, teacher, course, subject, and status filters.
-- Add pagination and Excel/PDF export.
+- Document frontend prerequisites, installation, run, test, and build commands.
+- Add environment-file examples without secrets.
+- Ensure the frontend build can run in CI.
 
 **BE Tasks**
 
-- Create enrollment, code, sales, and progress report queries.
-- Restrict teachers to their own course reports.
-- Allow administrators to view platform-wide reports.
-- Generate Excel and PDF exports.
-- Optimize large report queries.
+- Document SDK, database, migration, run, test, and build commands.
+- Add safe example configuration files.
+- Add Docker support only if the team plans to use it.
+- Create CI steps for restore, build, test, and artifact creation.
+- Document branch naming, commit expectations, and pull-request review rules.
 
 **QA Tasks**
 
-- Validate report values and totals.
-- Test filters and exports.
-- Test teacher and administrator access.
-- Test large datasets.
-
-### Feature 5.3: Audit and Administrative Oversight
-
-#### User Story: Review Important LMS Actions
-
-**FE Tasks**
-
-- Create audit views for teacher decisions, course decisions, wallet adjustments, code redemption, enrollment, and grading.
-- Add search, filters, and pagination.
-
-**BE Tasks**
-
-- Record important business and administrative actions.
-- Store user, action, reason, timestamp, and relevant old/new values.
-- Protect sensitive information.
-- Create secured audit queries.
-
-**QA Tasks**
-
-- Verify all required actions are recorded.
-- Verify audit data accuracy and immutability.
-- Verify sensitive information is excluded.
-- Test audit permissions.
-
-### Feature 5.4: Notifications
-
-#### User Story: Receive Important LMS Notifications
-
-**FE Tasks**
-
-- Create an in-app notification list and unread counter.
-- Link notifications to relevant courses, assessments, and results.
-
-**BE Tasks**
-
-- Publish notifications for teacher approval, course review, enrollment, assessment, and result events.
-- Create localized notification templates.
-- Implement background delivery, retries, and duplicate prevention.
-
-**QA Tasks**
-
-- Test recipients and message content.
-- Test Arabic templates.
-- Test retries and duplicate prevention.
-- Test notification links.
-
-### Feature 5.5: Monitoring and Supportability
-
-#### User Story: Operate and Support the LMS Reliably
-
-**BE Tasks**
-
-- Configure structured logging and correlation IDs.
-- Configure application, database, storage, and background-job health checks.
-- Add performance metrics and dependency monitoring.
-- Filter credentials and personal information from logs.
-- Document common support and recovery procedures.
-
-**QA Tasks**
-
-- Test health endpoints and dependency failures.
-- Verify error correlation.
-- Verify sensitive information is excluded from logs.
-- Test recovery scenarios.
-
-### Feature 5.6: CI/CD and Environment Deployment
-
-#### User Story: Build and Deploy the LMS Consistently
-
-**FE Tasks**
-
-- Configure automated frontend build and tests.
-- Configure environment-specific builds.
-- Publish frontend artifacts.
-
-**BE Tasks**
-
-- Configure automated backend build and tests.
-- Configure database migration deployment.
-- Configure secrets and environment settings.
-- Publish backend artifacts.
-- Configure deployment health validation and rollback.
-
-**QA Tasks**
-
-- Define quality gates.
-- Execute deployment smoke tests.
-- Validate development, QA, and production-like environments.
-- Verify rollback.
-
-### Feature 5.7: MVP Release Readiness
-
-#### User Story: Release the LMS MVP
-
-**FE Tasks**
-
-- Resolve critical frontend defects.
-- Verify responsive Arabic RTL behavior.
-- Verify supported browser compatibility.
-- Optimize production assets.
-
-**BE Tasks**
-
-- Resolve critical backend defects.
-- Review security, authorization, and dependency vulnerabilities.
-- Optimize critical APIs and database queries.
-- Verify production configuration and migrations.
-- Prepare technical runbooks.
-
-**QA Tasks**
-
-- Complete end-to-end regression testing.
-- Complete security and performance testing.
-- Validate all MVP business flows.
-- Prepare the test report and known-issues list.
-- Obtain business release approval.
+- Follow the README on a clean environment and report missing steps.
+- Define deployment smoke tests.
+- Verify that a failed build or failed test blocks the quality pipeline.
 
 ---
 
-## Epic Summary
+## Epic 0 Completion Criteria
 
-| Epic | Main LMS Business Scope |
-| --- | --- |
-| Epic 1 | Platform foundation, users, roles, teachers, students, parents, and academic master data |
-| Epic 2 | Course authoring, content, approval, publishing, catalog, and course details |
-| Epic 3 | Prepaid codes, student wallet, purchase, enrollment, and course access |
-| Epic 4 | Lesson delivery, progress, assessments, grading, results, and parent monitoring |
-| Epic 5 | Dashboards, reports, audit, notifications, monitoring, deployment, and release |
+Epic 0 is complete when:
 
-## Work Item Naming Convention
+- FE and BE applications run locally.
+- The solution follows the agreed Clean Architecture dependencies.
+- The database can be created from migrations and seeded safely.
+- Swagger, health checks, logging, localization, and global error handling work.
+- Authentication and authorization foundations protect a sample endpoint.
+- One sample vertical flow works from frontend to API to database.
+- FE and BE automated tests execute successfully.
+- Development and build instructions are documented and verified.
+
+---
+
+# Epic 1: Identity and Access Management
+
+## Feature 1.1: User Registration and Family Access
+
+### IAM-US-01: Student Registration
+
+**User Story:** As a student, I want to register so that I can use the platform.
+
+**Acceptance Criteria:** Student enters required data; duplicate identifiers are rejected; verification is triggered; the account is created in the correct initial status.
+
+**FE Tasks**
+
+- Build the student registration and verification experience.
+
+**BE Tasks**
+
+- Implement student registration, unique-identifier validation, account creation, and verification triggering.
+
+**QA Tasks**
+
+- Test successful registration, validation, duplicates, and initial account status.
+
+### IAM-US-02: Parent Registration and Student Linking
+
+**User Story:** As a parent, I want to register and link to my child so that I can follow progress.
+
+**Acceptance Criteria:** Parent account is created; parent logs in; an approved student identifier is submitted; the linked student becomes visible in the parent dashboard.
+
+**FE Tasks**
+
+- Build parent registration, student linking, and linked-student display.
+
+**BE Tasks**
+
+- Implement parent registration and secure parent-student linking.
+
+**QA Tasks**
+
+- Test registration, valid and invalid links, duplicate links, and parent access restrictions.
+
+## Feature 1.2: Teacher Account Approval
+
+### IAM-US-03: Teacher Account Approval
+
+**User Story:** As a teacher, I want my account approved so that I can create courses.
+
+**Acceptance Criteria:** Teacher submits profile and verification data; Admin reviews the application; approved teacher gains access; rejected teacher receives a reason and cannot publish courses.
+
+**FE Tasks**
+
+- Build teacher verification submission, approval-status display, and Admin review screens.
+
+**BE Tasks**
+
+- Implement teacher verification submission, approval and rejection workflow, access control, and notifications.
+
+**QA Tasks**
+
+- Test teacher submission, approval, rejection, reasons, and course-access restrictions.
+
+## Feature 1.3: Account Administration and Recovery
+
+### IAM-US-04: User Account Management
+
+**User Story:** As an admin, I want to manage user accounts so that platform access is controlled.
+
+**Acceptance Criteria:** Admin can search users, view status, activate or suspend accounts, and all sensitive actions are logged.
+
+**FE Tasks**
+
+- Build user search, account details, and status-management screens.
+
+**BE Tasks**
+
+- Implement user queries, account-status actions, authorization, and audit logging.
+
+**QA Tasks**
+
+- Test search, activation, suspension, permissions, and audit records.
+
+### IAM-US-05: Password Reset
+
+**User Story:** As a user, I want to reset my password so that I can regain access if I forget it.
+
+**Acceptance Criteria:** User requests reset; the system sends a valid one-time recovery method; an expired or reused reset method is rejected; the new password is saved successfully.
+
+**FE Tasks**
+
+- Build forgot-password, recovery verification, and new-password screens.
+
+**BE Tasks**
+
+- Implement secure password-reset requests, one-time recovery validation, expiry, and password update.
+
+**QA Tasks**
+
+- Test valid, invalid, expired, and reused recovery methods and password rules.
+
+### IAM-US-06: Account Suspension
+
+**User Story:** As an admin, I want to suspend risky accounts so that unauthorized or policy-violating access is stopped.
+
+**Acceptance Criteria:** Admin changes account status to Suspended; the user can no longer authenticate; the action is recorded in the audit log.
+
+**FE Tasks**
+
+- Add account suspension with confirmation and reason.
+
+**BE Tasks**
+
+- Implement suspension, session revocation, login prevention, and audit logging.
+
+**QA Tasks**
+
+- Test suspension, active-session termination, blocked login, and audit history.
+
+---
+
+# Epic 2: Teacher Management
+
+## Feature 2.1: Teacher Profile and Verification
+
+### TM-US-T01: Complete Teacher Profile
+
+**User Story:** As a teacher, I want to complete my profile and upload documents so that I can get verified.
+
+**Acceptance Criteria:** Teacher fills in required profile data, selects subjects, uploads required documents, and the system sets the account to Pending Approval.
+
+**FE Tasks**
+
+- Build the teacher profile, subject selection, and document-upload form.
+
+**BE Tasks**
+
+- Implement profile creation, document storage, subject selection, and Pending Approval status.
+
+**QA Tasks**
+
+- Test required profile data, documents, subjects, and approval status.
+
+### TM-US-T02: Edit Teacher Profile
+
+**User Story:** As a teacher, I want to edit my profile so that my information is always up to date.
+
+**Acceptance Criteria:** Teacher updates allowed fields successfully, and changes that affect verification trigger re-review when policy requires it.
+
+**FE Tasks**
+
+- Build teacher profile editing and show re-review status when applicable.
+
+**BE Tasks**
+
+- Implement allowed profile updates and re-review rules.
+
+**QA Tasks**
+
+- Test allowed and restricted changes and verification-impacting updates.
+
+### TM-US-T06: Prevent Duplicate Teacher Accounts
+
+**User Story:** As a teacher, I want to register with unique identity information so that duplicate accounts are prevented.
+
+**Acceptance Criteria:** The system validates configured unique identifiers and blocks registration when duplicates are detected.
+
+**FE Tasks**
+
+- Display unique-identifier validation errors during teacher registration.
+
+**BE Tasks**
+
+- Enforce teacher email, phone, or configured identity uniqueness.
+
+**QA Tasks**
+
+- Test duplicate and valid teacher registrations.
+
+## Feature 2.2: Teacher Review and Status
+
+### TM-US-T03: Review Teacher Applications
+
+**User Story:** As an admin, I want to review pending teacher applications so that I can verify credentials.
+
+**Acceptance Criteria:** Admin can view pending teachers, open a profile, review uploaded documents, and choose Approve or Reject.
+
+**FE Tasks**
+
+- Build the pending-teacher list and application review page.
+
+**BE Tasks**
+
+- Implement pending-application queries and approval decisions.
+
+**QA Tasks**
+
+- Test application listing, details, document access, approval, and rejection.
+
+### TM-US-T04: Reject Teacher With a Reason
+
+**User Story:** As an admin, I want to reject a teacher with a reason so that they know what to fix.
+
+**Acceptance Criteria:** Admin enters a mandatory rejection reason, and the teacher receives a clear notification describing the required correction.
+
+**FE Tasks**
+
+- Add teacher rejection with a mandatory reason and teacher feedback display.
+
+**BE Tasks**
+
+- Implement rejection-reason validation, status update, notification, and audit logging.
+
+**QA Tasks**
+
+- Test required reasons, teacher notification, and rejected status.
+
+### TM-US-T05: Suspend Teacher Account
+
+**User Story:** As an admin, I want to suspend a teacher account so that policy-violating or risky activity can be controlled.
+
+**Acceptance Criteria:** Admin changes the status to Suspended, teaching access is restricted according to platform rules, and the action is logged.
+
+**FE Tasks**
+
+- Add teacher suspension and display the resulting status.
+
+**BE Tasks**
+
+- Implement teacher suspension, teaching-access restrictions, and audit logging.
+
+**QA Tasks**
+
+- Test suspension, restricted actions, and audit history.
+
+## Feature 2.3: Verified Teaching Scope
+
+### TM-US-T07: Create Courses for Verified Subjects
+
+**User Story:** As a teacher, I want to create courses only for subjects I am verified in so that I teach within my approved scope.
+
+**Acceptance Criteria:** The system shows only verified subjects for course creation and blocks attempts to use unverified subjects.
+
+**FE Tasks**
+
+- Show verified subjects only in the course form.
+
+**BE Tasks**
+
+- Validate teacher-subject approval during course creation.
+
+**QA Tasks**
+
+- Test verified and unverified subject selection.
+
+---
+
+# Epic 3: Student Management
+
+## Feature 3.1: Student Learning and Progress
+
+### SM-US-01: Enroll in Courses
+
+**User Story:** As a student, I want to enroll in courses so that I can start learning.
+
+**Acceptance Criteria:** Enrollment succeeds only when course access rules are met, and the course appears in the student's dashboard.
+
+**FE Tasks**
+
+- Add enrollment actions and display enrolled courses on the student dashboard.
+
+**BE Tasks**
+
+- Integrate enrollment rules and return the student's enrolled courses.
+
+**QA Tasks**
+
+- Test successful and blocked enrollment and dashboard visibility.
+
+### SM-US-02: Track Student Progress
+
+**User Story:** As a student, I want to track my progress so that I know my completion status.
+
+**Acceptance Criteria:** Progress percentage updates automatically when lessons, quizzes, or assignments are completed.
+
+**FE Tasks**
+
+- Display course and activity progress to the student.
+
+**BE Tasks**
+
+- Calculate and update progress from completed learning activities.
+
+**QA Tasks**
+
+- Test progress calculations after lessons, quizzes, and assignments.
+
+### SM-US-04: Record Attendance
+
+**User Story:** As a teacher, I want to record attendance so that student participation is tracked.
+
+**Acceptance Criteria:** Teacher can mark attendance for scheduled course sessions and save the record successfully.
+
+**FE Tasks**
+
+- Build the teacher attendance-entry screen.
+
+**BE Tasks**
+
+- Implement scheduled-session attendance recording.
+
+**QA Tasks**
+
+- Test attendance entry, updates, permissions, and saved records.
+
+## Feature 3.2: Parent Monitoring
+
+### SM-US-03: Monitor Child Progress
+
+**User Story:** As a parent, I want to monitor my child's progress so that I can support learning.
+
+**Acceptance Criteria:** Parent can access linked student progress reports, attendance records, and released results.
+
+**FE Tasks**
+
+- Build parent views for linked-student progress, attendance, and results.
+
+**BE Tasks**
+
+- Provide parent reporting queries restricted to linked students.
+
+**QA Tasks**
+
+- Test linked and unlinked student access and displayed learning data.
+
+## Feature 3.3: Student Administration and Communication
+
+### SM-US-05: Manage Student Records
+
+**User Story:** As an admin, I want to manage student records so that data remains accurate.
+
+**Acceptance Criteria:** Admin can search students, update allowed record fields, and activate or deactivate accounts based on permissions.
+
+**FE Tasks**
+
+- Build student search, details, edit, activation, and deactivation screens.
+
+**BE Tasks**
+
+- Implement student queries, permitted updates, account-status actions, and authorization.
+
+**QA Tasks**
+
+- Test search, updates, status changes, and Admin permissions.
+
+### SM-US-06: Receive Learning Reminders
+
+**User Story:** As a student, I want to receive reminders and updates so that I do not miss important learning events.
+
+**Acceptance Criteria:** Student receives notifications for enrollment, schedule changes, deadlines, and released results.
+
+**FE Tasks**
+
+- Display student notifications and links to related learning items.
+
+**BE Tasks**
+
+- Generate notifications for the required student events.
+
+**QA Tasks**
+
+- Test event triggers, recipients, content, and related links.
+
+---
+
+# Epic 4: Content and Course Management
+
+## Feature 4.1: Course Creation and Structure
+
+### CCM-US-01: Create Course Draft
+
+**User Story:** As a teacher, I want to create a basic course draft so that I can plan my curriculum before publishing.
+
+**Acceptance Criteria:** Course is saved in Draft status, and core metadata such as title, description, and price settings are stored correctly.
+
+**FE Tasks**
+
+- Build the basic course-draft form.
+
+**BE Tasks**
+
+- Implement draft creation and storage of core course metadata.
+
+**QA Tasks**
+
+- Test required metadata, pricing, and Draft status.
+
+### CCM-US-02: Create Course
+
+**User Story:** As a teacher, I want to create a course so that I can provide learning content to students.
+
+**Acceptance Criteria:** Teacher enters required information, saves the course, and the course is created successfully.
+
+**FE Tasks**
+
+- Build the complete course create and edit experience.
+
+**BE Tasks**
+
+- Implement course creation, validation, ownership, and persistence.
+
+**QA Tasks**
+
+- Test valid and invalid course creation and teacher ownership.
+
+### CCM-US-03: Organize Course Structure
+
+**User Story:** As a teacher, I want to organize my course into subjects, modules, and lessons so that content is structured and easy to follow.
+
+**Acceptance Criteria:** Teacher can add, edit, reorder, and remove structure elements successfully.
+
+**FE Tasks**
+
+- Build the course structure editor.
+
+**BE Tasks**
+
+- Implement subject, module, and lesson operations and ordering.
+
+**QA Tasks**
+
+- Test add, edit, reorder, remove, and ownership rules.
+
+### CCM-US-04: Upload Educational Materials
+
+**User Story:** As a teacher, I want to upload educational materials so that students can access learning resources.
+
+**Acceptance Criteria:** Uploaded content is attached to lessons and becomes available according to publication and access rules.
+
+**FE Tasks**
+
+- Add material upload, progress, preview, and removal.
+
+**BE Tasks**
+
+- Implement secure file storage, lesson attachment, validation, and access control.
+
+**QA Tasks**
+
+- Test allowed files, upload failures, lesson attachment, and access rules.
+
+## Feature 4.2: Course Review and Publishing
+
+### CCM-US-05: Review Course Before Publishing
+
+**User Story:** As a teacher, I want my course to be reviewed before publishing so that it complies with platform policies.
+
+**Acceptance Criteria:** When the teacher submits a course for publishing, the system performs automated review, blocks violations, and provides clear feedback when issues exist.
+
+**FE Tasks**
+
+- Add publishing submission and display automated-review feedback.
+
+**BE Tasks**
+
+- Implement publishing validation, automated review, violation blocking, and feedback.
+
+**QA Tasks**
+
+- Test valid submissions, policy violations, and feedback.
+
+### CCM-US-06: Publish Course
+
+**User Story:** As a teacher, I want to publish a course so that students can access it.
+
+**Acceptance Criteria:** Course meets publishing requirements and becomes visible to eligible students.
+
+**FE Tasks**
+
+- Add course publication and status display.
+
+**BE Tasks**
+
+- Implement publishing requirements, status transition, and catalog visibility.
+
+**QA Tasks**
+
+- Test eligible and ineligible publication and student visibility.
+
+## Feature 4.3: Course Discovery and Access
+
+### CCM-US-08: Browse Available Courses
+
+**User Story:** As a student, I want to browse available courses so that I can find learning opportunities.
+
+**Acceptance Criteria:** Student can search courses and view course details, syllabus information, and access conditions.
+
+**FE Tasks**
+
+- Build the course catalog, search, filters, and course details.
+
+**BE Tasks**
+
+- Implement published-course search and details queries.
+
+**QA Tasks**
+
+- Test search, details, syllabus, access conditions, and unpublished-course exclusion.
+
+### CCM-US-09: Access Enrolled Courses
+
+**User Story:** As a student, I want to access enrolled courses so that I can study the learning materials.
+
+**Acceptance Criteria:** Student can open and use content only for courses they are authorized to access.
+
+**FE Tasks**
+
+- Build the enrolled-course content experience.
+
+**BE Tasks**
+
+- Enforce enrollment-based course and material access.
+
+**QA Tasks**
+
+- Test enrolled, non-enrolled, and direct-content access.
+
+## Feature 4.4: Course Engagement
+
+### CCM-US-07: Monitor Student Attendance and Progress
+
+**User Story:** As a teacher, I want to monitor student attendance and progress so that I can evaluate engagement.
+
+**Acceptance Criteria:** Teacher can view attendance status, lesson progress, and quiz outcomes for enrolled students.
+
+**FE Tasks**
+
+- Build teacher views for attendance, lesson progress, and quiz outcomes.
+
+**BE Tasks**
+
+- Provide course-engagement queries restricted to the course teacher.
+
+**QA Tasks**
+
+- Test engagement data, teacher ownership, and student privacy.
+
+### CCM-US-10: Complete Lesson Quiz
+
+**User Story:** As a student, I want to complete a lesson quiz so that I can unlock the next lesson and continue learning.
+
+**Acceptance Criteria:** Quiz is submitted, graded automatically, score is displayed, and the next lesson is unlocked only if the passing score is achieved.
+
+**FE Tasks**
+
+- Build lesson-quiz submission, score display, and lesson unlocking.
+
+**BE Tasks**
+
+- Implement quiz submission, automatic grading, passing rules, and lesson access.
+
+**QA Tasks**
+
+- Test pass, fail, score display, retry behavior, and lesson locking.
+
+---
+
+# Epic 5: Enrollment Management
+
+## Feature 5.1: Course Enrollment
+
+### EM-US-E01: Enroll in a Paid Course
+
+**User Story:** As a student, I want to enroll in a paid course after payment so that I can access its content.
+
+**Acceptance Criteria:** Payment succeeds; Enrollment status becomes Active; content is immediately accessible; the course appears in the student dashboard.
+
+**FE Tasks**
+
+- Build paid enrollment confirmation and success states.
+
+**BE Tasks**
+
+- Create an Active enrollment after confirmed payment and grant content access.
+
+**QA Tasks**
+
+- Test payment-linked enrollment, status, access, and dashboard display.
+
+### EM-US-E02: Enroll in a Free Course
+
+**User Story:** As a student, I want to enroll in a free course directly so that I can start learning without payment.
+
+**Acceptance Criteria:** Student selects Enroll; Enrollment status becomes Active; Payment ID is empty; content is immediately accessible.
+
+**FE Tasks**
+
+- Add direct enrollment for free courses.
+
+**BE Tasks**
+
+- Implement free enrollment without payment and grant access.
+
+**QA Tasks**
+
+- Test free enrollment, empty Payment ID, status, and access.
+
+### EM-US-E06: Prevent Duplicate Enrollment
+
+**User Story:** As a student, I want to be prevented from enrolling twice in the same course so that I do not accidentally pay twice.
+
+**Acceptance Criteria:** A repeated enrollment is blocked with an already-enrolled message and a link to the existing enrollment.
+
+**FE Tasks**
+
+- Display existing-enrollment guidance instead of repeating purchase.
+
+**BE Tasks**
+
+- Enforce unique active enrollment per student and course.
+
+**QA Tasks**
+
+- Test repeated and concurrent enrollment attempts.
+
+## Feature 5.2: Enrollment Views and Access
+
+### EM-US-E03: View Enrolled Courses
+
+**User Story:** As a student, I want to view all my enrolled courses so that I can track my learning journey.
+
+**Acceptance Criteria:** Dashboard displays Course Name, Teacher Name, Enrollment Date, Progress, and Status.
+
+**FE Tasks**
+
+- Build the My Courses view with the required enrollment information.
+
+**BE Tasks**
+
+- Provide the student's enrollment list and progress summary.
+
+**QA Tasks**
+
+- Test displayed values, statuses, and student data isolation.
+
+### EM-US-E05: View Enrolled Students
+
+**User Story:** As a teacher, I want to see all students enrolled in my courses so that I can understand my audience.
+
+**Acceptance Criteria:** Teacher sees student Name, Enrollment Date, and Progress; the teacher cannot edit or delete enrollment records.
+
+**FE Tasks**
+
+- Build the teacher course-enrollment list as read-only.
+
+**BE Tasks**
+
+- Provide teacher-owned course enrollment queries without modification actions.
+
+**QA Tasks**
+
+- Test displayed information, read-only behavior, and teacher ownership.
+
+### EM-US-E07: Preserve Enrollment After Teacher Suspension
+
+**User Story:** As the system, I want to preserve existing enrollments when a teacher is suspended so that students' learning is not disrupted.
+
+**Acceptance Criteria:** New enrollments are blocked; existing enrollments remain Active; enrolled students retain content access.
+
+**FE Tasks**
+
+- Display that new enrollment is unavailable while preserving enrolled-student access.
+
+**BE Tasks**
+
+- Block new enrollment and preserve existing active enrollment access.
+
+**QA Tasks**
+
+- Test new and existing enrollment behavior after teacher suspension.
+
+### EM-US-E08: Complete Enrollment
+
+**User Story:** As the system, I want to mark enrollments as Completed when students finish the course so that completion rates can be tracked.
+
+**Acceptance Criteria:** Progress is 100%; the final assessment is passed or not required; status becomes Completed; a completion notification is sent.
+
+**FE Tasks**
+
+- Display completed enrollment status and completion feedback.
+
+**BE Tasks**
+
+- Implement completion rules, status update, and notification.
+
+**QA Tasks**
+
+- Test completion with and without a final assessment.
+
+## Feature 5.3: Cancellation and Refund
+
+### EM-US-E04: Cancel Enrollment and Request Refund
+
+**User Story:** As a student, I want to cancel my enrollment within the allowed period to get a refund if the course does not meet my expectations.
+
+**Acceptance Criteria:** Cancellation is allowed within seven days when progress is below 20% and the enrollment is refund eligible; status becomes Pending Refund; access is suspended; Admin and student are notified. Otherwise, a specific error is displayed.
+
+**FE Tasks**
+
+- Build cancellation, eligibility feedback, confirmation, and Pending Refund status.
+
+**BE Tasks**
+
+- Implement cancellation eligibility, access suspension, status update, and notifications.
+
+**QA Tasks**
+
+- Test all eligible and ineligible cancellation combinations.
+
+### EM-US-E10: Review Refund Requests
+
+**User Story:** As an admin, I want to review pending refund requests so that I can prevent abuse of the refund policy.
+
+**Acceptance Criteria:** Admin reviews progress and enrollment date, approves or rejects with a mandatory reason, enrollment and access are updated correctly, refund is triggered when approved, and the student is notified.
+
+**FE Tasks**
+
+- Build the pending-refund list and approve or reject workflow.
+
+**BE Tasks**
+
+- Implement refund decisions, reasons, payment action, enrollment access changes, and notifications.
+
+**QA Tasks**
+
+- Test approval, rejection, reasons, refund triggering, access, and notifications.
+
+### EM-US-E09: Administrative Enrollment Cancellation
+
+**User Story:** As an admin, I want to manually cancel a student's enrollment without a refund for policy violations.
+
+**Acceptance Criteria:** Status becomes Cancelled, no refund is issued, a mandatory reason is stored, the action is audited, access is removed, and the student cannot re-enroll in the same course.
+
+**FE Tasks**
+
+- Add administrative cancellation with a mandatory reason.
+
+**BE Tasks**
+
+- Implement cancellation without refund, access removal, permanent re-enrollment blocking, and audit logging.
+
+**QA Tasks**
+
+- Test cancellation, no-refund behavior, access removal, blocking, and audit history.
+
+---
+
+# Epic 6: Assessment Management
+
+## Feature 6.1: Assessment Authoring
+
+### AM-US-01: Create Exam
+
+**User Story:** As a teacher, I want to create an exam so that I can evaluate student knowledge.
+
+**Acceptance Criteria:** Teacher enters exam details; the exam is saved successfully; the exam appears in the teacher dashboard.
+
+**FE Tasks**
+
+- Build exam creation and teacher exam-list screens.
+
+**BE Tasks**
+
+- Implement exam creation, validation, ownership, and retrieval.
+
+**QA Tasks**
+
+- Test valid and invalid exam creation and dashboard display.
+
+### AM-US-02: Add Assessment Questions
+
+**User Story:** As a teacher, I want to add questions to an assessment so that students can answer them.
+
+**Acceptance Criteria:** Questions are created successfully and linked to the assessment.
+
+**FE Tasks**
+
+- Build question creation and assessment-question management.
+
+**BE Tasks**
+
+- Implement question creation, validation, and assessment linkage.
+
+**QA Tasks**
+
+- Test question creation, types, validation, and linkage.
+
+## Feature 6.2: Assessment Participation and Review
+
+### AM-US-03: Take Quizzes and Exams
+
+**User Story:** As a student, I want to take quizzes and exams so that I can evaluate my learning progress.
+
+**Acceptance Criteria:** Student accesses available assessments and submits answers successfully.
+
+**FE Tasks**
+
+- Build assessment access, answer entry, and submission.
+
+**BE Tasks**
+
+- Implement assessment availability, attempts, answer storage, and submission.
+
+**QA Tasks**
+
+- Test authorized access, answer submission, and unavailable assessments.
+
+### AM-US-04: Review Assessment Submissions
+
+**User Story:** As a teacher, I want to review submissions so that I can evaluate student performance.
+
+**Acceptance Criteria:** Teacher can review submissions and assign grades and feedback.
+
+**FE Tasks**
+
+- Build the teacher submission-review and feedback screen.
+
+**BE Tasks**
+
+- Provide submission queries and save grades and feedback.
+
+**QA Tasks**
+
+- Test submission review, grading, feedback, and teacher authorization.
+
+## Feature 6.3: Parent Assessment View
+
+### AM-US-05: View Child Assessment Results
+
+**User Story:** As a parent, I want to view my child's assessment results so that I can monitor academic performance.
+
+**Acceptance Criteria:** Parent can access linked student results.
+
+**FE Tasks**
+
+- Build the parent assessment-results view.
+
+**BE Tasks**
+
+- Provide results restricted to linked students.
+
+**QA Tasks**
+
+- Test linked and unlinked student result access.
+
+---
+
+# Epic 7: Grading Management
+
+## Feature 7.1: Grade Student Work
+
+### GM-US-01: Automatic Grading
+
+**User Story:** As a student, I want automatic grading.
+
+**Acceptance Criteria:** Objective questions are graded automatically.
+
+**FE Tasks**
+
+- Display automatic grading status and score.
+
+**BE Tasks**
+
+- Implement objective-question grading and score calculation.
+
+**QA Tasks**
+
+- Test correct and incorrect answers and calculated scores.
+
+### GM-US-02: Grade Essays
+
+**User Story:** As a teacher, I want to grade essays.
+
+**Acceptance Criteria:** Teacher can assign and save scores.
+
+**FE Tasks**
+
+- Build essay scoring and feedback entry.
+
+**BE Tasks**
+
+- Implement authorized manual score and feedback saving.
+
+**QA Tasks**
+
+- Test valid scores, score limits, saving, and permissions.
+
+### GM-US-05: Publish Results
+
+**User Story:** As a teacher, I want to publish results.
+
+**Acceptance Criteria:** Students see only approved grades.
+
+**FE Tasks**
+
+- Add result review and publication.
+
+**BE Tasks**
+
+- Implement result approval, publication, and visibility rules.
+
+**QA Tasks**
+
+- Test published and unpublished result visibility.
+
+### GM-US-06: Modify Results With Reason
+
+**User Story:** As a teacher, I want to modify results with a reason.
+
+**Acceptance Criteria:** A reason is mandatory and the change is audit logged.
+
+**FE Tasks**
+
+- Add result modification with a mandatory reason.
+
+**BE Tasks**
+
+- Implement result changes, reason validation, recalculation, and audit logging.
+
+**QA Tasks**
+
+- Test modifications, required reasons, recalculation, and audit history.
+
+## Feature 7.2: View Academic Results
+
+### GM-US-03: View Published Results
+
+**User Story:** As a student, I want to view results.
+
+**Acceptance Criteria:** Only published results are visible.
+
+**FE Tasks**
+
+- Build the student results view.
+
+**BE Tasks**
+
+- Provide published results restricted to the current student.
+
+**QA Tasks**
+
+- Test published and unpublished visibility and student isolation.
+
+### GM-US-07: Parent Views Child Grades
+
+**User Story:** As a parent, I want to view my child's grades so that I can monitor their academic performance.
+
+**Acceptance Criteria:** Parent can view exam grades, quiz scores, pass/fail status, and overall course grade for a linked student and cannot modify grade data.
+
+**FE Tasks**
+
+- Build the read-only parent grades view.
+
+**BE Tasks**
+
+- Provide grades restricted to linked students.
+
+**QA Tasks**
+
+- Test displayed grade information, read-only behavior, and link restrictions.
+
+### GM-US-08: Browse Resolved Exam Results
+
+**User Story:** As a student, I want to browse my resolved exam results so that I can monitor my learning progress.
+
+**Acceptance Criteria:** The request returns the complete matching results for the target Student ID.
+
+**FE Tasks**
+
+- Build resolved-exam result browsing.
+
+**BE Tasks**
+
+- Implement resolved-result queries with student authorization.
+
+**QA Tasks**
+
+- Test complete results, filtering, and student access restrictions.
+
+## Feature 7.3: Grading Oversight
+
+### GM-US-04: Monitor Grading
+
+**User Story:** As an admin, I want to monitor grading.
+
+**Acceptance Criteria:** Grading audit information is available.
+
+**FE Tasks**
+
+- Build the grading audit view.
+
+**BE Tasks**
+
+- Record and expose secured grading audit information.
+
+**QA Tasks**
+
+- Test audit completeness, accuracy, and Admin-only access.
+
+---
+
+# Module Summary
+
+| Epic | Source Module | Business Stories |
+| --- | --- | ---: |
+| Epic 0 | Technical Foundation | 1 technical story |
+| Epic 1 | Identity and Access Management | 6 stories |
+| Epic 2 | Teacher Management | 7 stories |
+| Epic 3 | Student Management | 6 stories |
+| Epic 4 | Content and Course Management | 10 stories |
+| Epic 5 | Enrollment Management | 10 stories |
+| Epic 6 | Assessment Management | 5 stories |
+| Epic 7 | Grading Management | 8 stories |
+
+# Naming Convention
 
 ```text
-Epic:    EP-03 Student Wallet, Purchase, and Enrollment
-Feature: FT-03.03 Paid Course Enrollment
-Story:   US-03.03.01 Purchase and Enroll in a Course
-Task:    FE-03.03.01 Create Course Purchase Flow
-Task:    BE-03.03.02 Implement Transactional Enrollment
-Task:    QA-03.03.03 Test Purchase and Enrollment Rules
+Project: E-Learning Platform
+Epic:    EP-05 Enrollment Management
+Feature: FT-05.01 Course Enrollment
+Story:   EM-US-E01 Enroll in a Paid Course
+Task:    FE / BE / QA Task
 ```
-
-## Backlog Rules
-
-- Epics represent large LMS business outcomes.
-- Features represent releasable business capabilities.
-- User Stories describe value delivered to a user or administrator.
-- FE, BE, and QA Tasks contain implementation and verification work.
-- Technical work should be connected to the business feature it enables.
-- Every User Story must have acceptance criteria before entering a sprint.
-- Each sprint should deliver at least one working vertical slice across FE, BE, and QA.
